@@ -1,0 +1,21 @@
+Package: BioUtils
+Title: BioUtils: Tools for Biological Data Analysis and Visualization
+Version: 0.0.0.9000
+Authors@R: 
+    person("Spencer", "Treadway", , "spencer.treadway08@gmail.com", role = c("aut", "cre"))
+Description:
+    BioUtils is an R package designed to simplify and standardize workflows in
+    computational biology, bioinformatics, and biostatistics. It provides a
+    collection of tools for preprocessing biological datasets (such as gene
+    expression and sequencing data), performing statistical analyses, and
+    generating publication-quality visualizations. By integrating commonly used
+    operations into a single, consistent interface, BioUtils reduces redundancy,
+    improves reproducibility, and enables researchers and students to focus more
+    on biological interpretation rather than data wrangling.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 3.1.2)
+URL: https://github.com/SpencerTreadway/BioUtils
