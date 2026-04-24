@@ -6,8 +6,8 @@
 #' This function abstracts the workflow of using GEOquery to read
 #' raw GEO data and prepares it for consistent use within BioUtils.
 #'
-#' @param file_path Character. Path to a GEO .soft file.
-#' @param log_transform Logical. Whether to apply log2 transformation.
+#' @param file.path Character. Path to a GEO .soft file.
+#' @param log.transform Logical. Whether to apply log2 transformation.
 #'
 #' @return An ExpressionSet object containing expression data,
 #' phenotype data, and feature data.
@@ -47,8 +47,7 @@ load.geo.soft <- function(file.path, log.transform=FALSE)
 #' }
 #'
 #' @export
-
-get.gene.expression <- function(eset)
+extract.expression <- function(eset)
 {
   if(class(eset) != "ExpressionSet")
   {
