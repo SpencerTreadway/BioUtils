@@ -179,15 +179,15 @@ flag.biological.relevance <- function(effect.size, p.value)
 
   if (p.value < 0.05 && abs(effect.size) > 0.5)
   {
-    return("potentially biologically meaningful")
+    return("Potentially biologically meaningful")
   }
 
   if (p.value < 0.05 && abs(effect.size) <= 0.5)
   {
-    return("statistically significant but small effect")
+    return("Statistically significant but small effect")
   }
 
-  return("no strong evidence of biological relevance")
+  return("No strong evidence of biological relevance")
 }
 
 #' Perform Adaptive T-Test
@@ -313,7 +313,7 @@ analyze.gene <- function(df, alpha=0.05, n.boot=1000)
     ifelse(p.value < alpha, "statistically significant ", "not statistically significant "),
     "with a ", d.class, " effect size.",
     "\nResult is ", robustness, ".\n",
-    bio.flag, sep=""
+    bio.flag, ".", sep=""
   )
 
   return(list(

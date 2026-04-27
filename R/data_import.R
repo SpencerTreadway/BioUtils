@@ -19,9 +19,6 @@
 #' eset <- load.geo.soft("GDS3268.soft")
 #'
 #' @export
-
-library(GEOquery)
-
 load.geo.soft <- function(file.path, log.transform=FALSE)
 {
   if(!file.exists(file.path))
@@ -30,7 +27,7 @@ load.geo.soft <- function(file.path, log.transform=FALSE)
     return()
   }
 
-  return(GDS2eSet(getGEO(filename=file.path), do.log2=log.transform))
+  return(GEOquery::GDS2eSet(GEOquery::getGEO(filename=file.path), do.log2=log.transform))
 }
 
 #' Extract Expression and Metadata from GEO Dataset
