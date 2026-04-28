@@ -43,7 +43,7 @@
 #' probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
 #' expr <- get.gene.expression(geo$expression, probe)
 #' df <- build.analysis.df(expr, geo$phenotype, geo$gene)
-#' plot.gene.analysis(df)
+#' gene.analysis.plot(df)
 #'
 #' # Multi-gene faceted plot
 #' probes <- find.probe.by.gene(geo$gene, c(
@@ -52,11 +52,11 @@
 #' ))
 #' expr.multi <- get.gene.expression(geo$expression, probes)
 #' df.multi <- build.analysis.df(expr.multi, geo$phenotype, geo$gene)
-#' plot.gene.analysis(df.multi)
+#' gene.analysis.plot(df.multi)
 #' }
 #'
 #' @export
-plot.gene.analysis <- function(df, alpha=0.05, n.boot=1000, show.points=TRUE)
+gene.analysis.plot <- function(df, alpha=0.05, n.boot=1000, show.points=TRUE)
 {
   multi.gene <- "gene" %in% colnames(df) && length(unique(df$gene)) > 1
 
@@ -124,4 +124,256 @@ plot.gene.analysis <- function(df, alpha=0.05, n.boot=1000, show.points=TRUE)
   )
 
   return(p)
+}
+
+#' Plot PCA of Sample Expression Profiles
+#'
+#' Reduces the dimensionality of the full expression matrix using Principal
+#' Component Analysis and plots samples in the first two principal component
+#' axes, colored by a phenotype variable. Useful for quality control,
+#' batch effect detection, and exploratory assessment of sample clustering.
+#'
+#' @param expression.matrix Matrix of gene expression values. Rows are probes,
+#'   columns are samples.
+#' @param phenotype Data frame of sample metadata, as returned by
+#'   \code{extract.expression()$phenotype}.
+#' @param color.by Character. Column name in \code{phenotype} to use for
+#'   point coloring. Default is \code{"disease.state"}.
+#' @param scale Logical. Whether to scale probes to unit variance before PCA.
+#'   Default is \code{TRUE}.
+#'
+#' @return A ggplot object showing samples as points in PC1 vs PC2 space,
+#'   colored by the specified phenotype variable. The percentage of variance
+#'   explained is shown on each axis label.
+#'
+#' @details
+#' PCA is typically applied at the whole-dataset level before any gene
+#' filtering, making it a useful first diagnostic after \code{load.geo.soft()}
+#' and \code{extract.expression()}. Tight clustering of samples by disease
+#' state in PC1/PC2 space suggests a strong and detectable expression signal.
+#' Unexpected clustering by batch, sex, or other covariates can indicate the
+#' need for covariate adjustment in downstream \code{run.limma.de()} models.
+#'
+#' @examples
+#' \dontrun{
+#' data <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' pca.plot(data$expression, data$phenotype, color.by = "disease.state")
+#' }
+#'
+#' @export
+pca.plot <- function(expression.matrix, phenotype, color.by="disease.state", scale=TRUE)
+{
+  pca <- prcomp(t(expression.matrix), scale.=scale)
+  var.explained <- round(summary(pca)$importance[2, 1:2] * 100, 1)
+
+  df <- data.frame(
+    PC1 = pca$x[, 1],
+    PC2 = pca$x[, 2],
+    group = phenotype[[color.by]]
+  )
+
+  ggplot2::ggplot(df, ggplot2::aes(x=PC1, y=PC2, color=group)) +
+    ggplot2::geom_point(size=3, alpha=0.8) +
+    ggplot2::labs(
+      title = "PCA of Sample Expression Profiles",
+      x = paste0("PC1 (", var.explained[1], "% variance)"),
+      y = paste0("PC2 (", var.explained[2], "% variance)"),
+      color = color.by
+    ) +
+    ggplot2::theme(
+      panel.background = ggplot2::element_blank(),
+      panel.border = ggplot2::element_rect(color="black"),
+      panel.grid.major = ggplot2::element_blank(),
+      axis.line = ggplot2::element_line(color="black", linewidth=1.2),
+      title = ggplot2::element_text(size=20),
+      axis.title = ggplot2::element_text(size=16),
+      plot.title = ggplot2::element_text(hjust=0.5)
+    )
+}
+
+#' Plot Volcano Plot from Differential Expression Results
+#'
+#' Generates a volcano plot visualizing the relationship between statistical
+#' significance and fold-change magnitude for all probes in a differential
+#' expression analysis. Points are colored by whether they exceed user-defined
+#' significance and fold-change thresholds.
+#'
+#' @param de.results Data frame as returned by \code{run.limma.de()}, containing
+#'   at minimum the columns \code{logFC} and \code{adj.P.Val}.
+#' @param fc.threshold Numeric. Absolute log2 fold-change cutoff for labeling
+#'   genes as differentially expressed. Default is \code{1} (i.e., 2-fold).
+#' @param fdr.threshold Numeric. Adjusted p-value cutoff. Default is \code{0.05}.
+#' @param label.top Integer. Number of top differentially expressed genes to
+#'   label by name on the plot. Default is \code{10}.
+#'
+#' @return A ggplot object showing each probe as a point with \code{logFC} on
+#'   the x-axis and \code{-log10(adj.P.Val)} on the y-axis. Points are colored
+#'   as upregulated, downregulated, or not significant. Dashed threshold lines
+#'   are drawn at the specified cutoffs.
+#'
+#' @details
+#' The volcano plot is the standard summary visualization for a TopTable from
+#' \code{run.limma.de()} and serves as the genome-wide complement to
+#' \code{gene.analysis.plot()}, which visualizes a single gene. Probes that
+#' appear in the upper corners (high fold-change, low FDR) are the strongest
+#' candidates for follow-up with \code{analyze.gene()} or inclusion in a gene
+#' signature for \code{run.gsea()}.
+#'
+#' @examples
+#' \dontrun{
+#' de.results <- run.limma.de(eset, condition.col = "disease.state")
+#' volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
+#' }
+#'
+#' @export
+volcano.plot <- function(de.results, fc.threshold=1, fdr.threshold=0.05, label.top=10)
+{
+  de.results$neg.log10.fdr <- -log10(de.results$adj.P.Val)
+  de.results$status <- "Not Significant"
+  de.results$status[de.results$adj.P.Val < fdr.threshold &
+                      de.results$logFC > fc.threshold] <- "Upregulated"
+  de.results$status[de.results$adj.P.Val < fdr.threshold &
+                      de.results$logFC < -fc.threshold] <- "Downregulated"
+
+  top.genes <- head(de.results[order(de.results$adj.P.Val), ], label.top)
+
+  ggplot2::ggplot(de.results, ggplot2::aes(x=logFC, y=neg.log10.fdr, color=status)) +
+    ggplot2::geom_point(alpha=0.5, size=1.5) +
+    ggplot2::geom_vline(xintercept = c(-fc.threshold, fc.threshold), linetype = "dashed") +
+    ggplot2::geom_hline(yintercept = -log10(fdr.threshold), linetype = "dashed") +
+    ggplot2::scale_color_manual(values = c(
+      "Upregulated" = "firebrick",
+      "Downregulated" = "steelblue",
+      "Not Significant" = "grey60"
+    )) +
+    ggplot2::labs(
+      title = "Volcano Plot of Differential Expression",
+      x = "Log2 Fold Change",
+      y = "-Log10 Adjusted P-Value",
+      color = "Status"
+    ) +
+    ggplot2::theme(
+      panel.background = ggplot2::element_blank(),
+      panel.border = ggplot2::element_rect(color="black"),
+      panel.grid.major = ggplot2::element_blank(),
+      axis.line = ggplot2::element_line(color="black", linewidth=1.2),
+      title = ggplot2::element_text(size=20),
+      axis.title = ggplot2::element_text(size=16),
+      plot.title = ggplot2::element_text(hjust=0.5)
+    )
+}
+
+#' Plot Gene Co-expression Correlation Heatmap
+#'
+#' Visualizes a gene-by-gene correlation matrix as a clustered heatmap,
+#' revealing groups of co-expressed genes within a candidate gene set.
+#'
+#' @param cor.matrix Numeric matrix as returned by \code{gene.correlation.matrix()}.
+#'   Must be square and symmetric with row/column names corresponding to probe IDs.
+#' @param gene.names Character vector of gene names to use as axis labels in
+#'   place of probe IDs. Must be the same length and order as \code{cor.matrix}
+#'   rows. Default is \code{NULL}, which uses probe IDs.
+#'
+#' @return A \code{pheatmap} object displaying the correlation matrix with
+#'   hierarchical clustering applied to both rows and columns. Color scale
+#'   runs from blue (strong negative correlation) through white (no correlation)
+#'   to red (strong positive correlation).
+#'
+#' @details
+#' Hierarchical clustering of the correlation matrix groups genes with similar
+#' co-expression patterns into visible blocks on the heatmap. These blocks
+#' often correspond to genes in the same pathway or under shared regulatory
+#' control. This function is a targeted companion to \code{gene.correlation.matrix()}
+#' for a pre-selected gene set, and complements the genome-wide network view
+#' produced by WGCNA.
+#'
+#' @examples
+#' \dontrun{
+#' probe.ids <- sapply(c("BRCA1", "TP53", "MYC", "EGFR"), function(g) {
+#'   find.probe.by.gene(genes, g)
+#' })
+#' cor.mat <- gene.correlation.matrix(expression, probe.ids)
+#' correlation.heatmap.plot(cor.mat, gene.names = c("BRCA1", "TP53", "MYC", "EGFR"))
+#' }
+#'
+#' @export
+correlation.heatmap.plot <- function(cor.matrix, gene.names=NULL)
+{
+  if (!is.null(gene.names))
+  {
+    rownames(cor.matrix) <- gene.names
+    colnames(cor.matrix) <- gene.names
+  }
+
+  pheatmap::pheatmap(
+    cor.matrix,
+    color = grDevices::colorRampPalette(c("steelblue", "white", "firebrick"))(100),
+    breaks = seq(-1, 1, length.out = 101),
+    clustering_method = "complete",
+    display_numbers = TRUE,
+    number_format = "%.2f",
+    main = "Gene Co-expression Correlation Heatmap"
+  )
+}
+
+#' Run Gene Set Enrichment Analysis
+#'
+#' Tests whether predefined gene sets (e.g., pathways or GO terms) are
+#' systematically enriched among genes ranked by differential expression,
+#' using the fast preranked GSEA algorithm from \code{fgsea}.
+#'
+#' @param de.results Data frame as returned by \code{run.limma.de()}.
+#'   Must contain a \code{logFC} column and gene identifiers as row names.
+#' @param pathways Named list of character vectors, where each element is a
+#'   gene set and names are pathway labels. MSigDB or GO gene sets in this
+#'   format can be loaded via \code{msigdbr}.
+#' @param min.size Integer. Minimum number of genes required in a gene set
+#'   for it to be tested. Default is \code{15}.
+#' @param max.size Integer. Maximum gene set size. Default is \code{500}.
+#' @param n.perm Integer. Number of permutations for p-value estimation.
+#'   Default is \code{1000}.
+#'
+#' @return A data frame with one row per tested pathway, containing:
+#' \describe{
+#'   \item{pathway}{Gene set name}
+#'   \item{pval}{Nominal p-value}
+#'   \item{padj}{BH-adjusted p-value across all tested pathways}
+#'   \item{NES}{Normalized enrichment score (positive = upregulated in
+#'     disease, negative = downregulated)}
+#'   \item{size}{Number of genes from the pathway present in the ranked list}
+#'   \item{leadingEdge}{List of genes driving the enrichment}
+#' }
+#'
+#' @details
+#' GSEA operates on the full ranked gene list from \code{run.limma.de()} rather
+#' than a filtered subset, preserving information from all genes. This makes it
+#' more sensitive than over-representation analysis applied only to significant
+#' hits. The \code{leadingEdge} genes — those contributing most to a pathway's
+#' enrichment score — are strong candidates for follow-up with
+#' \code{analyze.gene()} or inclusion in \code{fit.lasso()} models.
+#'
+#' @examples
+#' \dontrun{
+#' library(msigdbr)
+#' pathways <- split(msigdbr(species = "Homo sapiens", category = "H")$gene_symbol,
+#'                   msigdbr(species = "Homo sapiens", category = "H")$gs_name)
+#' de.results <- run.limma.de(eset, condition.col = "disease.state")
+#' gsea.results <- run.gsea(de.results, pathways)
+#' head(gsea.results[order(gsea.results$padj), ])
+#' }
+#'
+#' @export
+run.gsea <- function(de.results, pathways, min.size=15, max.size=500, n.perm=1000)
+{
+  ranked.genes <- de.results$logFC
+  names(ranked.genes) <- rownames(de.results)
+  ranked.genes <- sort(ranked.genes, decreasing = TRUE)
+
+  fgsea::fgsea(
+    pathways = pathways,
+    stats = ranked.genes,
+    minSize = min.size,
+    maxSize = max.size,
+    nperm = n.perm
+  )
 }

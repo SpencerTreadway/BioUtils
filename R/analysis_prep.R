@@ -56,7 +56,7 @@ build.analysis.df <- function(expr.matrix, phenotype, genes, group.col="disease.
 
   long.df <- tidyr::pivot_longer(
     df,
-    cols = -probe,
+    cols = --tidyr::all_of("probe"),
     names_to = "sample",
     values_to = "expression"
   )

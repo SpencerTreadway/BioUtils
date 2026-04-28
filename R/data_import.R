@@ -79,7 +79,7 @@ load.geo.soft <- function(file.path, log.transform=FALSE)
 #' @export
 extract.expression <- function(eset)
 {
-  if(class(eset) != "ExpressionSet")
+  if(!inherits(eset, "ExpressionSet"))
   {
     print(paste("Invalid Argument of Class:", class(eset), sep=" "))
     return()

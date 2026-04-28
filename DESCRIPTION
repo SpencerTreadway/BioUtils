@@ -24,5 +24,8 @@ Imports:
   Biobase,
   limma,
   glmnet,
-  ggplot2
+  ggplot2,
+  pheatmap,
+  grDevices,
+  fgsea
 URL: https://github.com/SpencerTreadway/BioUtils
