@@ -65,7 +65,7 @@ gene.analysis.plot <- function(df, alpha=0.05, n.boot=1000, show.points=TRUE)
     ggplot2::geom_violin(trim=FALSE, alpha=0.6) +
     ggplot2::geom_boxplot(width=0.1, outlier.shape=NA)
 
-  if(show.points)
+  if(show.points && !multi.gene)
   {
     p <- p + ggplot2::geom_jitter(width=0.15, alpha=0.4)
   }

@@ -537,7 +537,7 @@ adjust.pvalues <- function(p.values, method="BH")
 #' @export
 gene.correlation.matrix <- function(expression.matrix, probe.ids, method="pearson")
 {
-  subset <- get.gene.expression(expression.matrix, probe.ids)
+  subset <- expression.matrix[which(rownames(expression.matrix) %in% probe.ids),]
   return(cor(t(subset), method=method))
 }
 
