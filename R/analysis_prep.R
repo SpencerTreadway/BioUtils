@@ -51,6 +51,10 @@
 #' @export
 build.analysis.df <- function(expr.matrix, phenotype, genes, group.col="disease.state")
 {
+  if(dim(expr.matrix)[2] == 1)
+  {
+    expr.matrix <- t(expr.matrix)
+  }
   df <- as.data.frame(expr.matrix)
   df$probe <- rownames(df)
 
@@ -68,7 +72,7 @@ build.analysis.df <- function(expr.matrix, phenotype, genes, group.col="disease.
   )
 
   # Resolve numeric probe IDs to human-readable gene names
-  long.df$gene <- genes[as.integer(long.df$probe), ][["Gene title"]]
+  long.df$gene <- genes[genes$ID %in% long.df$probe, ][["Gene title"]]
 
   long.df <- long.df[!is.nan(long.df$expression), ]
   long.df <- na.omit(long.df)
