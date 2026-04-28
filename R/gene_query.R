@@ -79,3 +79,8 @@ get.gene.expression <- function(expression, probe.id)
 {
   return(as.matrix(expression[probe.id, ]))
 }
+
+get.gene.name <- function(genes, probe.id)
+{
+  return(genes[which(genes$ID %in% probe.id),][["Gene title"]])
+}
