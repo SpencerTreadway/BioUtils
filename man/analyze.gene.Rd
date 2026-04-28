@@ -7,47 +7,62 @@
 analyze.gene(df, alpha = 0.05, n.boot = 1000)
 }
 \arguments{
-\item{df}{A data frame containing:
+\item{df}{A data frame as produced by \code{build.analysis.df()},
+containing at least two columns:
 \describe{
-\item{Expression}{Numeric vector of gene expression values}
-\item{Group}{Factor or character vector with exactly two groups}
-}}
+\item{expression}{Numeric vector of gene expression values.}
+\item{group}{Character or factor vector with exactly two group labels.}
+}
+When the data frame contains multiple genes (i.e., a \code{gene} column
+with more than one unique value), expression values from all genes are
+pooled together. Subset the data frame to a single gene before calling
+this function for per-gene results.}
 
-\item{alpha}{Numeric. Significance threshold. Default is 0.05.}
+\item{alpha}{Numeric. Significance threshold. Default is \code{0.05}.}
 
-\item{n_boot}{Integer. Number of bootstrap samples for confidence interval.
-Default is 1000.}
+\item{n.boot}{Integer. Number of bootstrap resamples for the confidence
+interval. Default is \code{1000}.}
 }
 \value{
-A named list containing:
+A named list with nine elements:
 \describe{
-\item{p.value}{P-value from t-test}
-\item{effect.size}{Cohen's d}
-\item{effect.size_class}{Qualitative magnitude of effect size}
-\item{confidence.interval}{List with lower and upper bounds}
-\item{test.type}{Type of t-test used}
-\item{nonparametric.p}{P-value from Wilcoxon test}
-\item{robustness}{Agreement between parametric and nonparametric tests}
-\item{biological.relevance}{Heuristic interpretation}
-\item{interpretation}{Human-readable summary}
-\item{raw}{Raw statistical test outputs}
+\item{p.value}{Numeric. P-value from the adaptive t-test.}
+\item{effect.size}{Numeric. Cohen's d.}
+\item{effect.size.class}{Character. Qualitative magnitude label from
+\code{classify.effect.size()}.}
+\item{confidence.interval}{Named list with \code{lower} and \code{upper}
+bounds for the bootstrapped CI around Cohen's d.}
+\item{nonparametric.p}{Numeric. P-value from the Wilcoxon rank-sum test.}
+\item{robustness}{Character. Agreement assessment between parametric and
+nonparametric tests.}
+\item{biological.relevance}{Character. Heuristic relevance label from
+\code{flag.biological.relevance()}.}
+\item{interpretation}{Character. Human-readable summary combining all
+of the above.}
+\item{raw}{List. Raw output from the parametric and nonparametric tests
+for further inspection.}
 }
 }
 \description{
 Performs a comprehensive statistical analysis comparing gene expression
-between two groups. This includes parametric and nonparametric testing,
-effect size estimation, confidence intervals, and interpretation.
+between two groups. Integrates parametric and nonparametric testing,
+effect size estimation, bootstrapped confidence intervals, and a
+heuristic biological relevance assessment.
 }
 \details{
-This function integrates multiple statistical perspectives to provide
-a more complete understanding of group differences. It goes beyond
-simple hypothesis testing by including effect size estimation,
-uncertainty quantification, and robustness checks.
+This function integrates multiple statistical perspectives to provide a
+more complete picture of group differences than a p-value alone. The
+result is designed to feed directly into \code{plot.gene.analysis()} for
+visualization.
 }
 \examples{
 \dontrun{
+geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
+expr <- get.gene.expression(geo$expression, probe)
+df <- build.analysis.df(expr, geo$phenotype, geo$gene)
 result <- analyze.gene(df)
-result$interpretation
+cat(result$interpretation)
 }
 
 }

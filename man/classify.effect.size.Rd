@@ -7,11 +7,22 @@
 classify.effect.size(d)
 }
 \arguments{
-\item{d}{Numeric. Effect size.}
+\item{d}{Numeric. Cohen's d effect size value (signed or unsigned).}
 }
 \value{
-Character description.
+Character string. One of \code{"negligible"}, \code{"small"},
+\code{"moderate"}, or \code{"large"} based on the absolute value of
+\code{d}, using the thresholds: negligible < 0.2 ≤ small < 0.5 ≤
+moderate < 0.8 ≤ large.
 }
 \description{
-Categorizes Cohen's d into qualitative magnitude levels.
+Categorizes an absolute Cohen's d value into a qualitative magnitude label
+using conventional thresholds.
+}
+\examples{
+\dontrun{
+classify.effect.size(0.3)   # "small"
+classify.effect.size(-0.9)  # "large"
+}
+
 }

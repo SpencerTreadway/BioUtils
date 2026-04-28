@@ -7,17 +7,17 @@
 nonparametric.test(df)
 }
 \arguments{
-\item{df}{A data frame containing:
+\item{df}{A data frame containing at least two columns:
 \describe{
-\item{expression}{Numeric vector of gene expression values}
-\item{group}{Factor or character vector with exactly two groups}
+\item{expression}{Numeric vector of gene expression values.}
+\item{group}{Character or factor vector with exactly two group labels.}
 }}
 }
 \value{
-A list containing:
+A named list with two elements:
 \describe{
-\item{p.value}{P-value from the Wilcoxon test}
-\item{test}{Character string identifying the test used}
+\item{p.value}{Numeric. P-value from the Wilcoxon rank-sum test.}
+\item{test}{Character. Name of the test used (\code{"Wilcoxon rank-sum"}).}
 }
 }
 \description{
@@ -27,10 +27,13 @@ expression values between two groups without assuming normality.
 \details{
 This test is useful as a robustness check against parametric methods
 such as the t-test, especially when data are skewed or contain outliers.
+The result is used by \code{analyze.gene()} to populate the
+\code{robustness} field of its return value.
 }
 \examples{
 \dontrun{
 res <- nonparametric.test(df)
+res$p.value
 }
 
 }

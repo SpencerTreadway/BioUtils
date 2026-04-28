@@ -7,19 +7,40 @@
 adaptive.t.test(df, alpha = 0.05)
 }
 \arguments{
-\item{df}{Analysis data frame with Expression and Group columns.}
+\item{df}{A data frame containing at least two columns:
+\describe{
+\item{expression}{Numeric vector of gene expression values.}
+\item{group}{Character or factor vector with exactly two group labels.}
+}}
 
-\item{alpha}{Significance level for variance test.}
+\item{alpha}{Numeric. Significance level for the variance equality test
+(\code{var.test()}). Default is \code{0.05}.}
 }
 \value{
-List containing:
+A named list with three elements:
 \describe{
-\item{variance.test}{Result of variance test}
-\item{t.test}{Result of t-test}
-\item{test.type}{Character indicating test used}
+\item{variance.test}{The result object from \code{var.test()} or
+\code{oneway.test()}, depending on the branch taken.}
+\item{t.test}{The result object from \code{t.test()}.}
+\item{p.value}{Numeric. The p-value from the t-test.}
 }
 }
 \description{
-Automatically determines whether to use a Welch or Student
-t-test based on variance equality.
+Automatically selects between Welch's and Student's t-test based on the
+result of a variance equality test, then returns a unified result structure
+regardless of which branch was taken.
+}
+\details{
+If \code{var.test()} returns a p-value below \code{alpha}, variances are
+considered unequal and Welch's t-test (\code{var.equal = FALSE}) is used.
+Otherwise, Student's t-test (\code{var.equal = TRUE}) is applied alongside
+a one-way ANOVA as a confirmatory check. The returned list is consumed
+internally by \code{analyze.gene()}.
+}
+\examples{
+\dontrun{
+result <- adaptive.t.test(df, alpha = 0.05)
+result$p.value
+}
+
 }

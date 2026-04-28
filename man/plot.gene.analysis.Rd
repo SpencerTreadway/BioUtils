@@ -7,29 +7,63 @@
 \method{plot}{gene.analysis}(df, alpha = 0.05, n.boot = 1000, show.points = TRUE)
 }
 \arguments{
-\item{df}{A data frame containing:
+\item{df}{A data frame as produced by \code{build.analysis.df()}, containing:
 \describe{
-\item{Expression}{Numeric vector of gene expression values}
-\item{Group}{Factor or character vector with exactly two groups}
+\item{expression}{Numeric vector of gene expression values.}
+\item{group}{Character or factor vector with exactly two group labels.}
+\item{gene}{Character vector of gene names. Optional; when present and
+containing more than one unique value, enables faceted multi-gene
+plotting.}
 }}
 
-\item{alpha}{Numeric. Significance level. Default is 0.05.}
+\item{alpha}{Numeric. Significance level passed to \code{analyze.gene()}.
+Default is \code{0.05}. Only used in single-gene mode.}
 
-\item{n.boot}{Integer. Number of bootstrap samples for confidence interval.}
+\item{n.boot}{Integer. Number of bootstrap resamples for the confidence
+interval, passed to \code{analyze.gene()}. Default is \code{1000}.
+Only used in single-gene mode.}
 
-\item{show.points}{Logical. Whether to overlay jittered points.}
+\item{show.points}{Logical. Whether to overlay jittered individual sample
+points on the violin/boxplot. Default is \code{TRUE}.}
 }
 \value{
-A ggplot object with annotated statistical results.
+A \code{ggplot} object. In single-gene mode the plot includes a
+text annotation with p-value, Cohen's d, and bootstrapped CI, and a
+subtitle with the full interpretation string. In multi-gene mode the
+plot is faceted by gene with no statistical annotation.
 }
 \description{
 Generates an annotated visualization of gene expression between two groups.
-This function internally performs statistical analysis using \code{analyze_gene()}
-and overlays key results on the plot.
+For a single-gene data frame, the plot is annotated with statistical results
+from \code{analyze.gene()}. For a multi-gene data frame, the plot is
+faceted by gene and annotations are omitted — use \code{analyze.gene()} on
+each gene subset for per-gene statistics.
+}
+\details{
+Single-gene mode is triggered when the \code{gene} column is absent or
+contains exactly one unique value. Multi-gene mode is triggered when
+\code{gene} contains more than one unique value, producing a
+\code{facet_wrap(~ gene)} layout. The plot theme is consistent across
+both modes and matches the style conventions of the BioUtils package.
 }
 \examples{
 \dontrun{
+geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+
+# Single-gene plot with statistical annotation
+probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
+expr <- get.gene.expression(geo$expression, probe)
+df <- build.analysis.df(expr, geo$phenotype, geo$gene)
 plot.gene.analysis(df)
+
+# Multi-gene faceted plot
+probes <- find.probe.by.gene(geo$gene, c(
+  "mucin 20, cell surface associated",
+  "alcohol dehydrogenase 1A (class I), alpha polypeptide"
+))
+expr.multi <- get.gene.expression(geo$expression, probes)
+df.multi <- build.analysis.df(expr.multi, geo$phenotype, geo$gene)
+plot.gene.analysis(df.multi)
 }
 
 }

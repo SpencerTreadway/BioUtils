@@ -7,10 +7,17 @@
 compute.effect.size(df)
 }
 \arguments{
-\item{df}{Data frame with Expression and Group columns.}
+\item{df}{A data frame containing at least two columns:
+\describe{
+\item{expression}{Numeric vector of gene expression values.}
+\item{group}{Character or factor vector with exactly two group labels,
+as produced by \code{build.analysis.df()}.}
+}}
 }
 \value{
-Numeric. Cohen's d value.
+Numeric. Cohen's d value. Positive values indicate the first
+group (alphabetically) has higher mean expression; negative values
+indicate the second group is higher.
 }
 \description{
 Calculates the standardized mean difference between two groups.

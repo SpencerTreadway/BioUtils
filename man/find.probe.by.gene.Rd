@@ -2,19 +2,46 @@
 % Please edit documentation in R/gene_query.R
 \name{find.probe.by.gene}
 \alias{find.probe.by.gene}
-\title{Find Probe ID by Gene Name}
+\title{Find Probe IDs by Gene Name}
 \usage{
-find.probe.by.gene(genes, gene.name)
+find.probe.by.gene(genes, gene.names)
 }
 \arguments{
-\item{genes}{Data frame of gene annotations.}
+\item{genes}{Data frame of gene annotations as returned by
+\code{extract.expression()$gene}. The second column (index 2) is expected
+to contain gene titles or descriptions.}
 
-\item{gene.name}{Character. Target gene name.}
+\item{gene.names}{Character vector of one or more gene names or descriptions
+to search for. Matching is exact and case-sensitive.}
 }
 \value{
-Character. Probe ID.
+Integer vector of probe IDs corresponding to the matched genes.
+The length of the vector equals the number of matches found. Returns an
+empty integer vector if no matches are found.
 }
 \description{
-Searches feature data to find the probe ID corresponding
-to a given gene name or description.
+Searches the gene annotation data frame to find the probe IDs corresponding
+to one or more gene names or descriptions.
+}
+\details{
+Probe IDs are the integer row names of the \code{genes} annotation data
+frame. These IDs are used directly to index rows of the expression matrix
+in \code{get.gene.expression()}. If multiple gene names are supplied, all
+matching probe IDs are returned as a vector, which is then passed as-is to
+\code{get.gene.expression()} to retrieve a multi-row expression matrix.
+}
+\examples{
+\dontrun{
+geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+
+# Single gene
+probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
+
+# Multiple genes
+probes <- find.probe.by.gene(geo$gene, c(
+  "mucin 20, cell surface associated",
+  "alcohol dehydrogenase 1A (class I), alpha polypeptide"
+))
+}
+
 }

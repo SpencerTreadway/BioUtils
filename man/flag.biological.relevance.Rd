@@ -4,37 +4,39 @@
 \alias{flag.biological.relevance}
 \title{Assess Biological Relevance of Gene Expression Differences}
 \usage{
-flag.biological.relevance(effect.size, p.value)
+flag.biological.relevance(effect.size, p.value, alpha = 0.05)
 }
 \arguments{
 \item{effect.size}{Numeric. Cohen's d or other standardized effect size.}
 
 \item{p.value}{Numeric. P-value from a statistical test.}
 
-\item{alpha}{Numeric. Significance threshold. Default is 0.05.}
+\item{alpha}{Numeric. Significance threshold used for the p-value
+comparison. Default is \code{0.05}.}
 }
 \value{
-Character string describing the inferred biological relevance.
+Character string. One of three heuristic labels:
+\describe{
+\item{"Potentially biologically meaningful"}{p < alpha and |d| > 0.5}
+\item{"Statistically significant but small effect"}{p < alpha and |d| <= 0.5}
+\item{"No strong evidence of biological relevance"}{p >= alpha}
+}
 }
 \description{
-Provides a heuristic interpretation of whether a statistically
-significant difference in gene expression is likely to be
-biologically meaningful based on effect size and p-value.
+Provides a heuristic interpretation of whether a statistically significant
+difference in gene expression is likely to be biologically meaningful,
+based on effect size magnitude and p-value.
 }
 \details{
-This function applies simple thresholds to distinguish between:
-\itemize{
-\item Statistically significant but small effects
-\item Potentially meaningful biological differences
-\item Lack of strong evidence
-}
-
-These rules are heuristic and intended as guidance rather than
-definitive biological conclusions.
+These rules are heuristic and intended as guidance rather than definitive
+biological conclusions. The thresholds for effect size (0.5) and
+significance are conventional starting points; domain knowledge should
+inform interpretation. This function is called internally by
+\code{analyze.gene()} using the same \code{alpha} passed to that function.
 }
 \examples{
 \dontrun{
-flag <- flag.biological.relevance(effect.size = 0.6, p.value = 0.01)
+flag.biological.relevance(effect.size = 0.6, p.value = 0.01)
 }
 
 }

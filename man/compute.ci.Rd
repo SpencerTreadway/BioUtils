@@ -9,18 +9,21 @@ compute.ci(df, alpha = 0.05, n.boot = 1000)
 \arguments{
 \item{df}{A data frame containing at least two columns:
 \describe{
-\item{expression}{Numeric vector of gene expression values}
-\item{group}{Factor or character vector indicating group membership}
+\item{expression}{Numeric vector of gene expression values.}
+\item{group}{Character or factor vector indicating group membership.}
 }}
 
+\item{alpha}{Numeric. Significance level used to compute the confidence
+interval bounds. Default is \code{0.05}, yielding a 95 percent CI.}
+
 \item{n.boot}{Integer. Number of bootstrap resamples to perform.
-Default is 1000.}
+Default is \code{1000}.}
 }
 \value{
-A named list with elements:
+A named list with two elements:
 \describe{
-\item{lower}{Lower bound of the confidence interval}
-\item{upper}{Upper bound of the confidence interval}
+\item{lower}{Lower bound of the bootstrapped confidence interval.}
+\item{upper}{Upper bound of the bootstrapped confidence interval.}
 }
 }
 \description{
@@ -32,11 +35,12 @@ deviate from normality.
 \details{
 The function repeatedly resamples the input data with replacement and
 recomputes Cohen's d for each resample. The confidence interval is
-derived from the empirical distribution of bootstrapped effect sizes.
+derived from the empirical distribution of bootstrapped effect sizes
+using the percentile method.
 }
 \examples{
 \dontrun{
-ci <- compute.ci(df, n.boot = 1000)
+ci <- compute.ci(df, alpha = 0.05, n.boot = 1000)
 }
 
 }

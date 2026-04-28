@@ -7,16 +7,40 @@
 extract.expression(eset)
 }
 \arguments{
-\item{eset}{ExpressionSet object.}
+\item{eset}{An \code{ExpressionSet} object as returned by
+\code{load.geo.soft()}.}
 }
 \value{
-A list containing:
+A named list with three elements:
 \describe{
-\item{expression}{Matrix of gene expression values}
-\item{phenotype}{Data frame of sample metadata}
-\item{features}{Data frame of gene/probe annotations}
+\item{expression}{Numeric matrix of gene expression values. Rows are
+probe IDs, columns are sample IDs.}
+\item{phenotype}{Data frame of sample metadata (e.g., disease state,
+age, tissue). Row names are sample IDs matching the column names of
+\code{expression}.}
+\item{gene}{Data frame of probe-level gene annotations (e.g., gene
+symbol, gene title, chromosomal location). Row names are probe IDs
+matching the row names of \code{expression}.}
 }
 }
 \description{
-Decomposes an ExpressionSet object into its core components.
+Decomposes an \code{ExpressionSet} object into its core components,
+returning a named list that is used as the primary data structure
+throughout BioUtils.
+}
+\details{
+The three returned components form the basis of all downstream BioUtils
+workflows. The \code{gene} data frame is passed to
+\code{find.probe.by.gene()} for probe lookup, \code{expression} is
+passed to \code{get.gene.expression()}, and \code{phenotype} is passed
+to \code{build.analysis.df()} for group labeling.
+}
+\examples{
+\dontrun{
+eset <- load.geo.soft("GDS3268.soft")
+geo <- extract.expression(eset)
+head(geo$phenotype)
+dim(geo$expression)
+}
+
 }

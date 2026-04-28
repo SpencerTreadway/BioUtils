@@ -9,11 +9,15 @@ load.geo.soft(file.path, log.transform = FALSE)
 \arguments{
 \item{file.path}{Character. Path to a GEO .soft file.}
 
-\item{log.transform}{Logical. Whether to apply log2 transformation.}
+\item{log.transform}{Logical. Whether to apply log2 transformation to the
+expression matrix during import. Default is \code{FALSE}. Set to
+\code{TRUE} if the raw data is not already on a log scale, which is
+common for Affymetrix and Agilent arrays.}
 }
 \value{
-An ExpressionSet object containing expression data,
-phenotype data, and feature data.
+An \code{ExpressionSet} object containing expression data,
+phenotype data, and feature data. This object is the required input
+for \code{extract.expression()}.
 }
 \description{
 Imports a GEO dataset from a .soft file and converts it into
@@ -23,9 +27,15 @@ a structured ExpressionSet object for downstream analysis.
 This function abstracts the workflow of using GEOquery to read
 raw GEO data and prepares it for consistent use within BioUtils.
 
-Internally uses GEOquery::getGEO() and GEOquery::GDS2eSet().
+Internally delegates to \code{GEOquery::getGEO()} to parse the .soft file
+and \code{GEOquery::GDS2eSet()} to construct the \code{ExpressionSet}.
+The returned object is passed directly to \code{extract.expression()} to
+decompose it into the list format used throughout BioUtils.
 }
 \examples{
+\dontrun{
 eset <- load.geo.soft("GDS3268.soft")
+eset <- load.geo.soft("GDS3268.soft", log.transform = TRUE)
+}
 
 }
