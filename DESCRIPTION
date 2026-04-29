@@ -33,4 +33,5 @@ Imports:
   pheatmap,
   grDevices,
   fgsea
-URL: https://github.com/SpencerTreadway/BioUtils
+URL: https://spencertreadway.github.io/BioUtils,
+     https://github.com/spencertreadway/BioUtils
