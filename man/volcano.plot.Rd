@@ -4,12 +4,7 @@
 \alias{volcano.plot}
 \title{Plot Volcano Plot from Differential Expression Results}
 \usage{
-volcano.plot(
-  de.results,
-  fc.threshold = 1,
-  fdr.threshold = 0.05,
-  label.top = 10
-)
+volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
 }
 \arguments{
 \item{de.results}{Data frame as returned by \code{run.limma.de()}, containing
@@ -19,9 +14,6 @@ at minimum the columns \code{logFC} and \code{adj.P.Val}.}
 genes as differentially expressed. Default is \code{1} (i.e., 2-fold).}
 
 \item{fdr.threshold}{Numeric. Adjusted p-value cutoff. Default is \code{0.05}.}
-
-\item{label.top}{Integer. Number of top differentially expressed genes to
-label by name on the plot. Default is \code{10}.}
 }
 \value{
 A ggplot object showing each probe as a point with \code{logFC} on

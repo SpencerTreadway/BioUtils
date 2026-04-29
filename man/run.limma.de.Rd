@@ -42,7 +42,7 @@ shrinkage to the variance estimates. This stabilizes results for genes with
 few observations and is the standard method for microarray DE analysis.
 
 The returned TopTable is the primary input for downstream functions such as
-\code{plot.volcano()} and \code{run.gsea()}, and can be filtered by
+\code{volcano.plot()} and \code{run.gsea()}, and can be filtered by
 \code{adj.P.Val} and \code{logFC} thresholds to define a gene signature.
 }
 \examples{
