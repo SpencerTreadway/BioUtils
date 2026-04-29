@@ -12,8 +12,8 @@ classify.effect.size(d)
 \value{
 Character string. One of \code{"negligible"}, \code{"small"},
 \code{"moderate"}, or \code{"large"} based on the absolute value of
-\code{d}, using the thresholds: negligible < 0.2 ≤ small < 0.5 ≤
-moderate < 0.8 ≤ large.
+\code{d}, using the thresholds: negligible < 0.2 <= small < 0.5 <=
+moderate < 0.8 <= large.
 }
 \description{
 Categorizes an absolute Cohen's d value into a qualitative magnitude label

@@ -139,8 +139,8 @@ nonparametric.test <- function(df)
 #'
 #' @return Character string. One of \code{"negligible"}, \code{"small"},
 #'   \code{"moderate"}, or \code{"large"} based on the absolute value of
-#'   \code{d}, using the thresholds: negligible < 0.2 ≤ small < 0.5 ≤
-#'   moderate < 0.8 ≤ large.
+#'   \code{d}, using the thresholds: negligible < 0.2 <= small < 0.5 <=
+#'   moderate < 0.8 <= large.
 #'
 #' @examples
 #' \dontrun{
@@ -573,7 +573,7 @@ gene.correlation.matrix <- function(expression.matrix, probe.ids, method="pearso
 #' LASSO is suited to high-dimensional genomic data where the number of genes
 #' far exceeds samples. It shrinks most coefficients to exactly zero, retaining
 #' only genes with independent predictive value. This complements
-#' \code{run.limma.de()} — while limma ranks genes by individual differential
+#' \code{run.limma.de()} - while limma ranks genes by individual differential
 #' expression, LASSO identifies the minimal subset with non-redundant joint
 #' predictive signal.
 #'
@@ -673,7 +673,7 @@ run.gsea <- function(de.results, genes, pathways, min.size=15, max.size=500)
   ranked.genes <- ranked.genes[names(ranked.genes) != ""]
 
   # Collapse duplicate gene symbols by keeping the probe with the
-  # highest absolute fold change — multiple probes per gene is common
+  # highest absolute fold change. Multiple probes per gene is common
   # on microarrays and fgsea requires unique gene names
   ranked.genes <- ranked.genes[order(abs(ranked.genes), decreasing=TRUE)]
   ranked.genes <- ranked.genes[!duplicated(names(ranked.genes))]

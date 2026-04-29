@@ -11,12 +11,12 @@
 "_PACKAGE"
 
 utils::globalVariables(c(
-  # build.analysis.df — tidyselect column reference
+  # build.analysis.df - tidyselect column reference
   "probe",
-  # stats_tests.R / visualization.R — ggplot2 aes() and formula objects
+  # stats_tests.R / visualization.R - ggplot2 aes() and formula objects
   "expression", "group", "gene", "ID",
-  # pca.plot — columns created from prcomp output before aes()
+  # pca.plot - columns created from prcomp output before aes()
   "PC1", "PC2",
-  # volcano.plot — columns created on de.results before aes()
+  # volcano.plot - columns created on de.results before aes()
   "logFC", "neg.log10.fdr", "status"
 ))

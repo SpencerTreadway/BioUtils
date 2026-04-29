@@ -3,7 +3,7 @@
 #' Generates an annotated visualization of gene expression between two groups.
 #' For a single-gene data frame, the plot is annotated with statistical results
 #' from \code{analyze.gene()}. For a multi-gene data frame, the plot is
-#' faceted by gene and annotations are omitted — use \code{analyze.gene()} on
+#' faceted by gene and annotations are omitted, use \code{analyze.gene()} on
 #' each gene subset for per-gene statistics.
 #'
 #' @param df A data frame as produced by \code{build.analysis.df()}, containing:

@@ -34,8 +34,8 @@ finding diagnostic biomarkers, and ultimately developing targeted therapies.
 This vignette walks through a complete transcriptomic analysis of **renal cell
 carcinoma (RCC)**, the most common form of kidney cancer, using publicly
 available gene expression microarray data from the NCBI Gene Expression Omnibus
-(GEO). The dataset, **GDS507**, contains expression profiles from 17 samples —
-a mix of clear cell RCC tumor tissue and matched normal kidney tissue — measured
+(GEO). The dataset, **GDS507**, contains expression profiles from 17 samples, a
+mix of clear cell RCC tumor tissue and matched normal kidney tissue, measured
 across ~22,000 probe sets on an Affymetrix HG-U133A microarray.
 
 We will use the BioUtils package to carry out the full analytical workflow:
@@ -56,7 +56,7 @@ sequences called **probes**, each designed to bind to the RNA transcribed from a
 specific gene. When a biological sample is processed and washed over the chip,
 messenger RNA from active genes hybridizes to its matching probe and emits a
 fluorescent signal. The brightness of each spot reflects how actively that gene
-is being transcribed — its **expression level**.
+is being transcribed, its **expression level**.
 
 The result is a table of ~22,000 numbers per sample, one for each probe on the
 chip, representing the transcriptional activity of the cell at the moment the
@@ -94,13 +94,13 @@ geo <- extract.expression(eset)
 
 This returns a named list with:
 
-- **`geo$expression`** — a 22,645 × 17 matrix of log2-transformed probe
+- **`geo$expression`** - a 22,645 by 17 matrix of log2-transformed probe
   intensities. Each row is a probe (a specific DNA sequence on the chip), each
   column is a patient sample.
-- **`geo$phenotype`** — a data frame of sample metadata. Most importantly for
+- **`geo$phenotype`** - a data frame of sample metadata. Most importantly for
   us, the `disease.state` column identifies each sample as either `"RCC"` or
   `"normal"`.
-- **`geo$gene`** — a data frame of probe annotations mapping each probe ID to
+- **`geo$gene`** - a data frame of probe annotations mapping each probe ID to
   the gene it targets (gene symbol, full title, chromosomal location, etc.).
 
 ### 1.4 Principal Component Analysis for Quality Control
@@ -162,13 +162,13 @@ measurements benefit from this pooled information, which prevents genes with
 accidentally small variance estimates from generating artificially inflated
 t-statistics.
 
-The result — called a **TopTable** — is a data frame with one row per probe,
+The result, called a **TopTable**, is a data frame with one row per probe,
 sorted by evidence of differential expression. The most important columns are:
 
-- **`logFC`** — the log2 fold change between RCC and normal tissue. A value of
+- **`logFC`** - the log2 fold change between RCC and normal tissue. A value of
   2 means RCC samples express that gene 4-fold higher on average. A value of
-  −1 means expression is halved in RCC.
-- **`adj.P.Val`** — the p-value after **Benjamini-Hochberg correction** for
+  -1 means expression is halved in RCC.
+- **`adj.P.Val`** - the p-value after **Benjamini-Hochberg correction** for
   multiple testing. This controls the **false discovery rate (FDR)**: an
   `adj.P.Val` of 0.05 means we expect 5% of the probes we call significant to
   be false positives, rather than 5% of *all* tests to be wrong.
@@ -184,7 +184,7 @@ A volcano plot is the standard visualization for a differential expression
 result set. It places every probe in a two-dimensional space: fold change on
 the x-axis (how large the difference is) and statistical significance on the
 y-axis (how confident we are in that difference). The most biologically
-interesting genes — large effect, high confidence — appear in the upper corners.
+interesting genes, large effect, high confidence, appear in the upper corners.
 
 ```{r volcano}
 volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
@@ -222,8 +222,8 @@ cat("Top differentially expressed genes:\n")
 print(top.genes)
 ```
 
-`get.gene.name()` performs the reverse lookup of `find.probe.by.gene()` —
-given probe IDs from the TopTable, it retrieves the human-readable gene title
+`get.gene.name()` performs the reverse lookup of `find.probe.by.gene()`, given
+probe IDs from the TopTable, it retrieves the human-readable gene title
 from the annotation data frame. The filtering step removes probes that are
 present on the array but have no gene annotation in the database (common in
 older array designs).
@@ -233,7 +233,7 @@ older array designs).
 ## Part 3: Deep-Dive Single-Gene Analysis
 
 The limma TopTable tells us *which* genes are differentially expressed. Now we
-use BioUtils to understand *how* they are expressed — the magnitude, direction,
+use BioUtils to understand *how* they are expressed, the magnitude, direction,
 and robustness of each gene's difference.
 
 ### 3.1 Retrieving and Preparing Expression Data
@@ -248,7 +248,7 @@ df.multi <- build.analysis.df(expr.mat, geo$phenotype, geo$gene)
 
 `get.gene.expression()` slices the rows of the full expression matrix
 corresponding to our selected probes. `build.analysis.df()` then pivots this
-wide matrix (probes × samples) into a **long-format** data frame where each row
+wide matrix (probes by samples) into a **long-format** data frame where each row
 represents one gene-sample observation, with columns for gene name, expression
 value, and disease state group. This format is required by all downstream
 analysis and visualization functions.
@@ -303,8 +303,8 @@ t-test. This prevents a common source of inflated false positives.
 **Cohen's d** (`result$effect.size`): A p-value alone does not tell you whether
 a statistically significant difference is biologically meaningful. With 17
 samples, even a tiny difference in means can reach statistical significance.
-Cohen's d is a **standardized effect size** — the difference in group means
-divided by the pooled standard deviation — that puts the magnitude of the
+Cohen's d is a **standardized effect size**, the difference in group means
+divided by the pooled standard deviation, that puts the magnitude of the
 difference in context. A d of 0.2 is small; 0.5 is moderate; 0.8 or above is
 large. In a clinical context, genes with small effect sizes are unlikely to
 serve as robust biomarkers even if they are highly significant.
@@ -322,7 +322,7 @@ Gene expression data often violates this assumption, particularly when one
 group has outlier samples. The Wilcoxon test makes no distributional
 assumptions and provides an independent check. When both tests agree
 (`result$robustness`), we can be more confident in the result. When they
-disagree — t-test significant, Wilcoxon not — the result may be driven by
+disagree, t-test significant, Wilcoxon not, the result may be driven by
 distributional differences rather than a genuine shift in the population mean.
 
 ```{r interpret}
@@ -342,7 +342,7 @@ cat("Biological assessment:  ", result$biological.relevance, "\n")
 
 ## Part 4: Pathway-Level Interpretation with GSEA
 
-So far every analysis has focused on individual genes — which ones are
+So far every analysis has focused on individual genes, which ones are
 differentially expressed, how large their effects are, and which ones jointly
 predict disease state. But genes do not act in isolation. They participate in
 coordinated **biological pathways**: cascades of molecular events that together
@@ -356,16 +356,16 @@ A **gene set** is simply a curated list of genes known to participate in the
 same biological process. The Molecular Signatures Database (MSigDB) maintains
 thousands of such sets organized into collections. The most widely used
 collection for disease studies is the **Hallmark** collection (`category = "H"`),
-which contains 50 gene sets representing well-defined biological states —
+which contains 50 gene sets representing well-defined biological states,
 things like "HYPOXIA", "MYC_TARGETS_V1", "INFLAMMATORY_RESPONSE", and
 "EPITHELIAL_MESENCHYMAL_TRANSITION". Each set was assembled by expert curation
 to be coherent and minimally overlapping with the others.
 
 For kidney cancer specifically, we might expect to see strong enrichment of
 hypoxia-related gene sets. Clear cell RCC commonly inactivates the *VHL* tumor
-suppressor gene, which normally targets the HIF1α transcription factor for
-degradation. Without VHL, HIF1α accumulates and drives a transcriptional
-program mimicking chronic oxygen deprivation — activating genes for blood vessel
+suppressor gene, which normally targets the HIF1\alpha transcription factor for
+degradation. Without VHL, HIF1\alpha accumulates and drives a transcriptional
+program mimicking chronic oxygen deprivation, activating genes for blood vessel
 formation, glucose uptake, and anaerobic metabolism. This is one of the
 best-characterized molecular signatures in all of oncology, and GSEA is an
 ideal tool for detecting it.
@@ -384,14 +384,14 @@ pathways <- split(hallmark.df$gene_symbol, hallmark.df$gs_name)
 
 # Each element is a vector of gene symbols belonging to that pathway
 cat("Number of Hallmark gene sets:", length(pathways), "\n")
-cat("Example — first 6 genes in HALLMARK_HYPOXIA:\n")
+cat("Example - first 6 genes in HALLMARK_HYPOXIA:\n")
 print(head(pathways[["HALLMARK_HYPOXIA"]]))
 ```
 
 ### 4.3 Running GSEA
 
-GSEA works on a **ranked gene list** — all genes in the experiment ordered from
-most upregulated to most downregulated — rather than a filtered list of
+GSEA works on a **ranked gene list**, all genes in the experiment ordered from
+most upregulated to most downregulated, rather than a filtered list of
 significant hits. This is an important distinction from simpler enrichment
 methods that only ask "are pathway genes over-represented among my significant
 hits?" GSEA asks "do pathway genes cluster at the top or bottom of the full
@@ -415,9 +415,9 @@ print(head(gsea.results[, c("pathway", "NES", "pval", "padj", "size")], 10))
 The two most important columns in the GSEA output are:
 
 **`NES` (Normalized Enrichment Score):** The core statistic of GSEA. A positive
-NES means the gene set is enriched among genes upregulated in RCC — the genes
+NES means the gene set is enriched among genes upregulated in RCC, the genes
 belonging to this pathway tend to cluster at the top of the ranked list. A
-negative NES means the pathway is enriched among downregulated genes —
+negative NES means the pathway is enriched among downregulated genes,
 suppressed in RCC relative to normal tissue. The normalization accounts for
 gene set size, so NES values are comparable across sets.
 
@@ -428,7 +428,7 @@ Benjamini-Hochberg correction across all tested pathways.
 
 **`leadingEdge`:** The subset of genes from the pathway that contribute most to
 driving the enrichment score. These are the most biologically interesting genes
-within an enriched pathway — the ones at the "leading edge" of the ranked list.
+within an enriched pathway, the ones at the "leading edge" of the ranked list.
 They are strong candidates for follow-up with `analyze.gene()`.
 
 ```{r gsea_followup}
@@ -454,8 +454,8 @@ if(length(leading.probes) > 0)
 
 This closes the analytical loop: GSEA identifies which biological programs are
 dysregulated in RCC at the pathway level, and the leading edge genes point us
-back to the individual-gene tools — `analyze.gene()` and `gene.analysis.plot()`
-— to characterize the most important drivers within each pathway.
+back to the individual-gene tools, `analyze.gene()` and `gene.analysis.plot()`,
+to characterize the most important drivers within each pathway.
 
 ---
 
@@ -491,7 +491,7 @@ anti-correlated pairs (when one goes up, the other tends to go down).
 Clusters of co-expressed genes visible in the heatmap often correspond to genes
 in the same biological pathway or under the control of the same transcription
 factor. In a renal cell carcinoma context, you might see a cluster of
-angiogenesis-related genes (driven by HIF1α pathway activation, common in RCC)
+angiogenesis-related genes (driven by HIF1\alpha pathway activation, common in RCC)
 all moving together, or a cluster of genes involved in fatty acid metabolism.
 
 ### 5.2 LASSO Regression for Predictive Biomarker Discovery
@@ -521,8 +521,8 @@ coefficients to exactly zero, keeping only those with
 **independent predictive value** when all other selected genes are accounted for.
 
 `cv.glmnet()` determines the optimal penalty strength through 10-fold
-cross-validation. At `lambda.1se` — the most regularized model within one
-standard error of the minimum cross-validation error — LASSO returns the
+cross-validation. At `lambda.1se`, the most regularized model within one
+standard error of the minimum cross-validation error, LASSO returns the
 sparsest model that still predicts well, which tends to be the most
 interpretable and generalizable.
 
@@ -547,49 +547,49 @@ expressed as a coherent pipeline:
 ```{r full_pipeline}
 library(BioUtils)
 
-# ── 1. Import ──────────────────────────────────────────────────────────────────
+# == 1. Import =================================================================
 eset <- load.geo.soft("", "GDS507", log.transform = TRUE)
 geo <- extract.expression(eset)
 
-# ── 2. Quality Control ─────────────────────────────────────────────────────────
+# == 2. Quality Control ========================================================
 pca.plot(geo$expression, geo$phenotype, color.by = "disease.state")
 
-# ── 3. Genome-Wide Differential Expression ─────────────────────────────────────
+# == 3. Genome-Wide Differential Expression ====================================
 de.results <- run.limma.de(geo, condition.col = "disease.state")
 volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
 
-# ── 4. Select Top Candidates ───────────────────────────────────────────────────
+# == 4. Select Top Candidates ==================================================
 top.probes <- rownames(head(de.results[order(de.results$adj.P.Val), ], 10))
 top.genes <- get.gene.name(geo$gene, top.probes)
 valid.mask <- which(top.genes != "")
 top.probes <- top.probes[valid.mask]
 top.genes <- top.genes[valid.mask]
 
-# ── 5. Build Analysis Data Frame ───────────────────────────────────────────────
+# == 5. Build Analysis Data Frame ==============================================
 expr.mat <- get.gene.expression(geo$expression, top.probes)
 df.multi <- build.analysis.df(expr.mat, geo$phenotype, geo$gene)
 
-# ── 6. Multi-Gene Visualization ────────────────────────────────────────────────
+# == 6. Multi-Gene Visualization ===============================================
 gene.analysis.plot(df.multi)
 
-# ── 7. Single-Gene Deep-Dive ───────────────────────────────────────────────────
+# == 7. Single-Gene Deep-Dive ==================================================
 df.single <- df.multi[which(df.multi$gene == get.gene.name(geo$gene, top.probes[1], use.symbols=TRUE)), ]
 gene.analysis.plot(df.single)
 result <- analyze.gene(df.single)
 cat(result$interpretation)
 
-# ── 8. Co-expression Analysis ──────────────────────────────────────────────────
+# == 8. Co-expression Analysis =================================================
 cor.mat <- gene.correlation.matrix(geo$expression, top.probes, method = "pearson")
 correlation.heatmap.plot(cor.mat, gene.names = get.gene.name(geo$gene, top.probes, use.symbols=TRUE))
 
-# ── 9. Pathway Enrichment ──────────────────────────────────────────────────────
+# == 9. Pathway Enrichment =====================================================
 hallmark.df <- msigdbr::msigdbr(species = "Homo sapiens", category = "H")
 pathways <- split(hallmark.df$gene_symbol, hallmark.df$gs_name)
 gsea.results <- run.gsea(de.results, geo$gene, pathways)
 gsea.results <- gsea.results[order(gsea.results$padj), ]
 print(head(gsea.results[, c("pathway", "NES", "pval", "padj")], 10))
 
-# ── 10. Multi-Gene Predictive Modeling ─────────────────────────────────────────
+# == 10. Multi-Gene Predictive Modeling ========================================
 phenotype.binary <- ifelse(geo$phenotype$disease.state == "RCC", 1, 0)
 lasso.fit <- fit.lasso(geo$expression, phenotype.binary)
 coef.mat <- coef(lasso.fit, s = "lambda.1se")
@@ -611,8 +611,8 @@ input it expects, and the output it produces:
 | `pca.plot()` | Expression matrix, phenotype | ggplot | Quality control |
 | `run.limma.de()` | `geo` list | TopTable data frame | Genome-wide DE |
 | `volcano.plot()` | TopTable | ggplot | DE visualization |
-| `get.gene.name()` | Annotation df, probe IDs | Gene name strings | Probe → gene resolution |
-| `find.probe.by.gene()` | Annotation df, gene names | Probe ID integers | Gene → probe resolution |
+| `get.gene.name()` | Annotation df, probe IDs | Gene name strings | Probe to gene resolution |
+| `find.probe.by.gene()` | Annotation df, gene names | Probe ID integers | Gene to probe resolution |
 | `get.gene.expression()` | Expression matrix, probe IDs | Expression matrix | Slice expression data |
 | `build.analysis.df()` | Expression matrix, phenotype, annotation | Long-format df | Prepare for analysis |
 | `gene.analysis.plot()` | Long-format df | ggplot | Per-gene visualization |

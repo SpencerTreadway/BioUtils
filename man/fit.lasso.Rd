@@ -41,7 +41,7 @@ automatically penalizing redundant predictors.
 LASSO is suited to high-dimensional genomic data where the number of genes
 far exceeds samples. It shrinks most coefficients to exactly zero, retaining
 only genes with independent predictive value. This complements
-\code{run.limma.de()} — while limma ranks genes by individual differential
+\code{run.limma.de()} - while limma ranks genes by individual differential
 expression, LASSO identifies the minimal subset with non-redundant joint
 predictive signal.
 }

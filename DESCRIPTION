@@ -1,10 +1,10 @@
 Package: BioUtils
-Title: Tools for Biological Data Analysis and Visualization
+Title: BioUtils: Tools for Biological Data Analysis and Visualization
 Version: 0.0.1
 Authors@R: 
     person("Spencer", "Treadway", , "spencer.treadway08@gmail.com", role = c("aut", "cre"))
 Description:
-    BioUtils is an R package designed to simplify and standardize workflows in
+    An R package designed to simplify and standardize workflows in
     computational biology, bioinformatics, and biostatistics. It provides a
     collection of tools for preprocessing biological datasets (such as gene
     expression and sequencing data), performing statistical analyses, and
