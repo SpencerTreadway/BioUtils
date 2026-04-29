@@ -72,7 +72,7 @@ BioUtils integrates multiple layers of analysis:
 
 ## Documentation
 
-Full documentation is available via:
+Full documentation is available at https://spencertreadway.github.io/BioUtils/ or via:
 
 ```r
 help(package = "BioUtils")
