@@ -26,7 +26,7 @@ remotes::install_github("YOUR_USERNAME/BioUtils")
 
 ---
 
-## 🔬 Example Workflow
+## Example Workflow
 
 ```r
 # Load data
@@ -58,7 +58,7 @@ lasso.fit <- fit.lasso(geo$expression, phenotype.binary)
 
 ---
 
-## 🧠 Interpretation
+## Interpretation
 
 BioUtils integrates multiple layers of analysis:
 
@@ -70,7 +70,7 @@ BioUtils integrates multiple layers of analysis:
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 Full documentation is available via:
 
