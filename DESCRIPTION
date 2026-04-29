@@ -1,6 +1,6 @@
 Package: BioUtils
 Title: Tools for Biological Data Analysis and Visualization
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person("Spencer", "Treadway", , "spencer.treadway08@gmail.com", role = c("aut", "cre"))
 Description:

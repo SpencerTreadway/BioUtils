@@ -1,0 +1,8 @@
+navbar:
+  structure:
+    left: [home, reference, articles]
+
+articles:
+  - title: "Tutorials"
+    contents:
+      - bioutils-case-study
