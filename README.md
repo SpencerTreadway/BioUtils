@@ -21,7 +21,7 @@ It provides a unified workflow for differential expression, statistical testing,
 
 ```r
 install.packages("remotes")
-remotes::install_github("YOUR_USERNAME/BioUtils")
+remotes::install_github("spencertreadway/BioUtils")
 ```
 
 ---
