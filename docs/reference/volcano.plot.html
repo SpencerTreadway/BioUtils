@@ -59,12 +59,7 @@ significance and fold-change thresholds.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">volcano.plot</span><span class="op">(</span></span>
-<span>  <span class="va">de.results</span>,</span>
-<span>  fc.threshold <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  fdr.threshold <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  label.top <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">volcano.plot</span><span class="op">(</span><span class="va">de.results</span>, fc.threshold <span class="op">=</span> <span class="fl">1</span>, fdr.threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -83,11 +78,6 @@ genes as differentially expressed. Default is <code>1</code> (i.e., 2-fold).</p>
 
 <dt id="arg-fdr-threshold">fdr.threshold<a class="anchor" aria-label="anchor" href="#arg-fdr-threshold"></a></dt>
 <dd><p>Numeric. Adjusted p-value cutoff. Default is <code>0.05</code>.</p></dd>
-
-
-<dt id="arg-label-top">label.top<a class="anchor" aria-label="anchor" href="#arg-label-top"></a></dt>
-<dd><p>Integer. Number of top differentially expressed genes to
-label by name on the plot. Default is <code>10</code>.</p></dd>
 
 </dl></div>
     <div id="value">

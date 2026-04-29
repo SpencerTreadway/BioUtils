@@ -81,7 +81,7 @@ column names of <code>expr.matrix</code>.</p></dd>
 <dd><p>Data frame of gene annotations as returned by
 <code>extract.expression()$gene</code>. Row indices must correspond to the probe
 IDs (row names) of <code>expr.matrix</code>. Used to resolve probe IDs to the
-human-readable gene names stored in the <code>"Gene title"</code> column.</p></dd>
+human-readable gene names stored in the <code>"Gene symbol"</code> column.</p></dd>
 
 
 <dt id="arg-group-col">group.col<a class="anchor" aria-label="anchor" href="#arg-group-col"></a></dt>
@@ -113,7 +113,7 @@ with downstream functions.</p></dd>
 to long format, merges sample metadata by sample ID, resolves probe IDs to
 gene names using the annotation data frame, and selects the three columns
 needed for analysis. The output is the standard input for
-<code><a href="analyze.gene.html">analyze.gene()</a></code>, <code>plot.gene.analysis()</code>, and <code><a href="fit.lasso.html">fit.lasso()</a></code>.</p>
+<code><a href="analyze.gene.html">analyze.gene()</a></code>, <code><a href="gene.analysis.plot.html">gene.analysis.plot()</a></code>, and <code><a href="fit.lasso.html">fit.lasso()</a></code>.</p>
 <p>Requires <code>tidyr</code> for the pivot step. Ensure <code>tidyr</code> is listed
 under <code>Imports</code> in the package DESCRIPTION.</p>
     </div>
