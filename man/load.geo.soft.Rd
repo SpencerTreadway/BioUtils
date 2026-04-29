@@ -4,38 +4,38 @@
 \alias{load.geo.soft}
 \title{Load GEO Dataset from SOFT File}
 \usage{
-load.geo.soft(file.path, log.transform = FALSE)
+load.geo.soft(file.path = NULL, accession = NULL, log.transform = FALSE)
 }
 \arguments{
-\item{file.path}{Character. Path to a GEO .soft file.}
+\item{file.path}{Character. Path to a local GEO SOFT file. If the file does
+not exist and \code{accession} is provided, the dataset is downloaded
+automatically.}
 
-\item{log.transform}{Logical. Whether to apply log2 transformation to the
-expression matrix during import. Default is \code{FALSE}. Set to
-\code{TRUE} if the raw data is not already on a log scale, which is
-common for Affymetrix and Agilent arrays.}
+\item{accession}{Character. GEO accession ID (e.g., \code{"GDS507"}). Only
+used when \code{file.path} does not exist. Default is \code{NULL}.}
+
+\item{log.transform}{Logical. Whether to apply a log2 transformation to the
+expression matrix during import. Default is \code{FALSE}.}
 }
 \value{
-An \code{ExpressionSet} object containing expression data,
-phenotype data, and feature data. This object is the required input
-for \code{extract.expression()}.
+An \code{ExpressionSet} object for use with \code{extract.expression()}.
 }
 \description{
-Imports a GEO dataset from a .soft file and converts it into
-a structured ExpressionSet object for downstream analysis.
-}
-\details{
-This function abstracts the workflow of using GEOquery to read
-raw GEO data and prepares it for consistent use within BioUtils.
-
-Internally delegates to \code{GEOquery::getGEO()} to parse the .soft file
-and \code{GEOquery::GDS2eSet()} to construct the \code{ExpressionSet}.
-The returned object is passed directly to \code{extract.expression()} to
-decompose it into the list format used throughout BioUtils.
+Imports a GEO dataset and converts it into a structured ExpressionSet object.
+If a local SOFT file is found at \code{file.path} it is loaded directly.
+Otherwise the dataset is downloaded from NCBI GEO using \code{accession} and
+cached in \code{tempdir()}.
 }
 \examples{
 \dontrun{
-eset <- load.geo.soft("GDS3268.soft")
-eset <- load.geo.soft("GDS3268.soft", log.transform = TRUE)
+# Load from a local file
+eset <- load.geo.soft("GDS507.soft")
+
+# Download automatically if not found locally
+eset <- load.geo.soft("GDS507.soft", accession = "GDS507", log.transform = TRUE)
+
+# Download without a local file at all
+eset <- load.geo.soft(NULL, accession = "GDS507", log.transform = TRUE)
 }
 
 }

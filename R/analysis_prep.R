@@ -13,7 +13,7 @@
 #' @param genes Data frame of gene annotations as returned by
 #'   \code{extract.expression()$gene}. Row indices must correspond to the probe
 #'   IDs (row names) of \code{expr.matrix}. Used to resolve probe IDs to the
-#'   human-readable gene names stored in the \code{"Gene title"} column.
+#'   human-readable gene names stored in the \code{"Gene symbol"} column.
 #' @param group.col Character. Name of the column in \code{phenotype} to use as
 #'   the grouping variable. Default is \code{"disease.state"}.
 #'
@@ -34,7 +34,7 @@
 #' to long format, merges sample metadata by sample ID, resolves probe IDs to
 #' gene names using the annotation data frame, and selects the three columns
 #' needed for analysis. The output is the standard input for
-#' \code{analyze.gene()}, \code{plot.gene.analysis()}, and \code{fit.lasso()}.
+#' \code{analyze.gene()}, \code{gene.analysis.plot()}, and \code{fit.lasso()}.
 #'
 #' Requires \code{tidyr} for the pivot step. Ensure \code{tidyr} is listed
 #' under \code{Imports} in the package DESCRIPTION.
@@ -72,7 +72,7 @@ build.analysis.df <- function(expr.matrix, phenotype, genes, group.col="disease.
   )
 
   # Resolve numeric probe IDs to human-readable gene names
-  long.df$gene <- genes[genes$ID %in% long.df$probe, ][["Gene title"]]
+  long.df$gene <- genes[genes$ID %in% long.df$probe, ][["Gene symbol"]]
 
   long.df <- long.df[!is.nan(long.df$expression), ]
   long.df <- na.omit(long.df)

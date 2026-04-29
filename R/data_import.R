@@ -1,43 +1,50 @@
 #' Load GEO Dataset from SOFT File
 #'
-#' Imports a GEO dataset from a .soft file and converts it into
-#' a structured ExpressionSet object for downstream analysis.
+#' Imports a GEO dataset and converts it into a structured ExpressionSet object.
+#' If a local SOFT file is found at \code{file.path} it is loaded directly.
+#' Otherwise the dataset is downloaded from NCBI GEO using \code{accession} and
+#' cached in \code{tempdir()}.
 #'
-#' This function abstracts the workflow of using GEOquery to read
-#' raw GEO data and prepares it for consistent use within BioUtils.
+#' @param file.path Character. Path to a local GEO SOFT file. If the file does
+#'   not exist and \code{accession} is provided, the dataset is downloaded
+#'   automatically.
+#' @param accession Character. GEO accession ID (e.g., \code{"GDS507"}). Only
+#'   used when \code{file.path} does not exist. Default is \code{NULL}.
+#' @param log.transform Logical. Whether to apply a log2 transformation to the
+#'   expression matrix during import. Default is \code{FALSE}.
 #'
-#' @param file.path Character. Path to a GEO .soft file.
-#' @param log.transform Logical. Whether to apply log2 transformation to the
-#'   expression matrix during import. Default is \code{FALSE}. Set to
-#'   \code{TRUE} if the raw data is not already on a log scale, which is
-#'   common for Affymetrix and Agilent arrays.
-#'
-#' @return An \code{ExpressionSet} object containing expression data,
-#'   phenotype data, and feature data. This object is the required input
-#'   for \code{extract.expression()}.
-#'
-#' @details
-#' Internally delegates to \code{GEOquery::getGEO()} to parse the .soft file
-#' and \code{GEOquery::GDS2eSet()} to construct the \code{ExpressionSet}.
-#' The returned object is passed directly to \code{extract.expression()} to
-#' decompose it into the list format used throughout BioUtils.
+#' @return An \code{ExpressionSet} object for use with \code{extract.expression()}.
 #'
 #' @examples
 #' \dontrun{
-#' eset <- load.geo.soft("GDS3268.soft")
-#' eset <- load.geo.soft("GDS3268.soft", log.transform = TRUE)
+#' # Load from a local file
+#' eset <- load.geo.soft("GDS507.soft")
+#'
+#' # Download automatically if not found locally
+#' eset <- load.geo.soft("GDS507.soft", accession = "GDS507", log.transform = TRUE)
+#'
+#' # Download without a local file at all
+#' eset <- load.geo.soft(NULL, accession = "GDS507", log.transform = TRUE)
 #' }
 #'
 #' @export
-load.geo.soft <- function(file.path, log.transform=FALSE)
+load.geo.soft <- function(file.path=NULL, accession=NULL, log.transform=FALSE)
 {
-  if(!file.exists(file.path))
+  if(!is.null(file.path) && file.exists(file.path))
   {
-    print(paste(file.path, "not found", sep=" "))
-    return()
+    return(GEOquery::GDS2eSet(GEOquery::getGEO(filename=file.path),
+                              do.log2=log.transform))
   }
 
-  return(GEOquery::GDS2eSet(GEOquery::getGEO(filename=file.path), do.log2=log.transform))
+  if(is.null(accession))
+  {
+    stop("File not found and no accession provided. ",
+         "Supply an accession (e.g., \"GDS507\") to download automatically.")
+  }
+
+  message(accession, " not found locally, downloading from NCBI GEO...")
+  gds <- GEOquery::getGEO(accession, destdir=tempdir(), GSEMatrix=FALSE)
+  return(GEOquery::GDS2eSet(gds, do.log2=log.transform))
 }
 
 #' Extract Expression and Metadata from GEO Dataset
@@ -81,8 +88,7 @@ extract.expression <- function(eset)
 {
   if(!inherits(eset, "ExpressionSet"))
   {
-    print(paste("Invalid Argument of Class:", class(eset), sep=" "))
-    return()
+    stop("Invalid argument: expected ExpressionSet, got ", class(eset))
   }
 
   gene.expression <- Biobase::exprs(eset)

@@ -80,7 +80,45 @@ get.gene.expression <- function(expression, probe.id)
   return(as.matrix(expression[probe.id, ]))
 }
 
-get.gene.name <- function(genes, probe.id)
+#' Resolve Probe IDs to Gene Names
+#'
+#' Converts one or more integer probe IDs back to their human-readable gene
+#' title strings or short gene symbols using the gene annotation data frame.
+#' This is the inverse operation of \code{find.probe.by.gene()}.
+#'
+#' @param genes Data frame of gene annotations as returned by
+#'   \code{extract.expression()$gene}. Must contain columns \code{"ID"},
+#'   \code{"Gene title"}, and \code{"Gene symbol"}.
+#' @param probe.id Integer or character vector of one or more probe IDs to
+#'   resolve, as returned by \code{find.probe.by.gene()}.
+#' @param use.symbols Logical. If \code{FALSE} (default), returns full
+#'   descriptive gene titles from the \code{"Gene title"} column, suitable
+#'   for interpretation and reporting. If \code{TRUE}, returns short gene
+#'   symbols from the \code{"Gene symbol"} column, suitable for plot axis
+#'   labels and any downstream tool that expects standard gene symbols such
+#'   as \code{run.gsea()}.
+#'
+#' @return Character vector of gene names corresponding to the supplied probe
+#'   IDs. Returns empty strings \code{""} for probes with no annotation, which
+#'   should be filtered with \code{which(result != "")}.
+#'
+#' @examples
+#' \dontrun{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS507",
+#'                                         log.transform = TRUE))
+#' de.results <- run.limma.de(geo)
+#' top.probes <- rownames(head(de.results, 10))
+#'
+#' # Full titles for reporting
+#' top.titles  <- get.gene.name(geo$gene, top.probes)
+#'
+#' # Short symbols for plot labels and GSEA
+#' top.symbols <- get.gene.name(geo$gene, top.probes, use.symbols = TRUE)
+#' }
+#'
+#' @export
+get.gene.name <- function(genes, probe.id, use.symbols=FALSE)
 {
-  return(genes[which(genes$ID %in% probe.id),][["Gene title"]])
+  col <- if(use.symbols) "Gene symbol" else "Gene title"
+  return(genes[which(genes$ID %in% probe.id), ][[col]])
 }

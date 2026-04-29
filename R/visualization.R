@@ -93,16 +93,14 @@ gene.analysis.plot <- function(df, alpha=0.05, n.boot=1000, show.points=TRUE)
       "\n", 1 - alpha, "% CI: [", signif(ci$lower, 2), ", ", signif(ci$upper, 2), "]"
     )
 
-    y.pos <- max(df$expression, na.rm=TRUE)
-
     p <- p +
       ggplot2::annotate(
         "text",
         x = 1.5,
-        y = y.pos - 0.2,
+        y = Inf,
         label = label,
         hjust = 0.5,
-        vjust = -0.5,
+        vjust = 1.5,
         size = 4
       ) +
       ggplot2::labs(
@@ -203,8 +201,6 @@ pca.plot <- function(expression.matrix, phenotype, color.by="disease.state", sca
 #' @param fc.threshold Numeric. Absolute log2 fold-change cutoff for labeling
 #'   genes as differentially expressed. Default is \code{1} (i.e., 2-fold).
 #' @param fdr.threshold Numeric. Adjusted p-value cutoff. Default is \code{0.05}.
-#' @param label.top Integer. Number of top differentially expressed genes to
-#'   label by name on the plot. Default is \code{10}.
 #'
 #' @return A ggplot object showing each probe as a point with \code{logFC} on
 #'   the x-axis and \code{-log10(adj.P.Val)} on the y-axis. Points are colored
@@ -226,7 +222,7 @@ pca.plot <- function(expression.matrix, phenotype, color.by="disease.state", sca
 #' }
 #'
 #' @export
-volcano.plot <- function(de.results, fc.threshold=1, fdr.threshold=0.05, label.top=10)
+volcano.plot <- function(de.results, fc.threshold=1, fdr.threshold=0.05)
 {
   de.results$neg.log10.fdr <- -log10(de.results$adj.P.Val)
   de.results$status <- "Not Significant"
@@ -234,8 +230,6 @@ volcano.plot <- function(de.results, fc.threshold=1, fdr.threshold=0.05, label.t
                       de.results$logFC > fc.threshold] <- "Upregulated"
   de.results$status[de.results$adj.P.Val < fdr.threshold &
                       de.results$logFC < -fc.threshold] <- "Downregulated"
-
-  top.genes <- head(de.results[order(de.results$adj.P.Val), ], label.top)
 
   ggplot2::ggplot(de.results, ggplot2::aes(x=logFC, y=neg.log10.fdr, color=status)) +
     ggplot2::geom_point(alpha=0.5, size=1.5) +
@@ -312,68 +306,8 @@ correlation.heatmap.plot <- function(cor.matrix, gene.names=NULL)
     clustering_method = "complete",
     display_numbers = TRUE,
     number_format = "%.2f",
+    angle_col = 45,
+    angle_row = 0,
     main = "Gene Co-expression Correlation Heatmap"
-  )
-}
-
-#' Run Gene Set Enrichment Analysis
-#'
-#' Tests whether predefined gene sets (e.g., pathways or GO terms) are
-#' systematically enriched among genes ranked by differential expression,
-#' using the fast preranked GSEA algorithm from \code{fgsea}.
-#'
-#' @param de.results Data frame as returned by \code{run.limma.de()}.
-#'   Must contain a \code{logFC} column and gene identifiers as row names.
-#' @param pathways Named list of character vectors, where each element is a
-#'   gene set and names are pathway labels. MSigDB or GO gene sets in this
-#'   format can be loaded via \code{msigdbr}.
-#' @param min.size Integer. Minimum number of genes required in a gene set
-#'   for it to be tested. Default is \code{15}.
-#' @param max.size Integer. Maximum gene set size. Default is \code{500}.
-#' @param n.perm Integer. Number of permutations for p-value estimation.
-#'   Default is \code{1000}.
-#'
-#' @return A data frame with one row per tested pathway, containing:
-#' \describe{
-#'   \item{pathway}{Gene set name}
-#'   \item{pval}{Nominal p-value}
-#'   \item{padj}{BH-adjusted p-value across all tested pathways}
-#'   \item{NES}{Normalized enrichment score (positive = upregulated in
-#'     disease, negative = downregulated)}
-#'   \item{size}{Number of genes from the pathway present in the ranked list}
-#'   \item{leadingEdge}{List of genes driving the enrichment}
-#' }
-#'
-#' @details
-#' GSEA operates on the full ranked gene list from \code{run.limma.de()} rather
-#' than a filtered subset, preserving information from all genes. This makes it
-#' more sensitive than over-representation analysis applied only to significant
-#' hits. The \code{leadingEdge} genes — those contributing most to a pathway's
-#' enrichment score — are strong candidates for follow-up with
-#' \code{analyze.gene()} or inclusion in \code{fit.lasso()} models.
-#'
-#' @examples
-#' \dontrun{
-#' library(msigdbr)
-#' pathways <- split(msigdbr(species = "Homo sapiens", category = "H")$gene_symbol,
-#'                   msigdbr(species = "Homo sapiens", category = "H")$gs_name)
-#' de.results <- run.limma.de(eset, condition.col = "disease.state")
-#' gsea.results <- run.gsea(de.results, pathways)
-#' head(gsea.results[order(gsea.results$padj), ])
-#' }
-#'
-#' @export
-run.gsea <- function(de.results, pathways, min.size=15, max.size=500, n.perm=1000)
-{
-  ranked.genes <- de.results$logFC
-  names(ranked.genes) <- rownames(de.results)
-  ranked.genes <- sort(ranked.genes, decreasing = TRUE)
-
-  fgsea::fgsea(
-    pathways = pathways,
-    stats = ranked.genes,
-    minSize = min.size,
-    maxSize = max.size,
-    nperm = n.perm
   )
 }

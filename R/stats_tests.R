@@ -82,7 +82,7 @@ compute.ci <- function(df, alpha=0.05, n.boot=1000)
     boot.ds[i] <- compute.effect.size(sample.df)
   }
 
-  ci <- quantile(boot.ds, c(alpha / 2, 1 - (alpha / 2)))
+  ci <- quantile(boot.ds, c(alpha / 2, 1 - (alpha / 2)), na.rm=TRUE)
 
   return(list(
     lower = ci[1],
@@ -434,7 +434,7 @@ analyze.gene <- function(df, alpha=0.05, n.boot=1000)
 #' few observations and is the standard method for microarray DE analysis.
 #'
 #' The returned TopTable is the primary input for downstream functions such as
-#' \code{plot.volcano()} and \code{run.gsea()}, and can be filtered by
+#' \code{volcano.plot()} and \code{run.gsea()}, and can be filtered by
 #' \code{adj.P.Val} and \code{logFC} thresholds to define a gene signature.
 #'
 #' @examples
@@ -598,4 +598,91 @@ fit.lasso <- function(expression.matrix, phenotype.vector, alpha=1, nfolds=10)
   )
 
   return(fit)
+}
+
+#' Run Gene Set Enrichment Analysis
+#'
+#' Tests whether predefined gene sets (e.g., pathways or GO terms) are
+#' systematically enriched among genes ranked by differential expression,
+#' using the fgseaMultilevel algorithm from \code{fgsea}.
+#'
+#' @param de.results Data frame as returned by \code{run.limma.de()}.
+#'   Must contain a \code{logFC} column. Row names are probe IDs.
+#' @param genes Data frame of gene annotations as returned by
+#'   \code{extract.expression()$gene}. Must contain columns \code{"ID"} for
+#'   probe identifiers and \code{"Gene symbol"} for gene symbols matching
+#'   the format used by pathway databases such as MSigDB.
+#' @param pathways Named list of character vectors, where each element is a
+#'   gene set and names are pathway labels. MSigDB or GO gene sets in this
+#'   format can be loaded via \code{msigdbr}.
+#' @param min.size Integer. Minimum number of genes required in a gene set
+#'   for it to be tested. Default is \code{15}.
+#' @param max.size Integer. Maximum gene set size. Default is \code{500}.
+#'
+#' @return A data frame with one row per tested pathway, containing:
+#' \describe{
+#'   \item{pathway}{Gene set name.}
+#'   \item{pval}{Nominal p-value.}
+#'   \item{padj}{BH-adjusted p-value across all tested pathways.}
+#'   \item{NES}{Normalized enrichment score. Positive values indicate
+#'     enrichment among upregulated genes; negative values indicate
+#'     enrichment among downregulated genes.}
+#'   \item{size}{Number of genes from the pathway present in the ranked list.}
+#'   \item{leadingEdge}{List-column of genes driving the enrichment score.}
+#' }
+#'
+#' @details
+#' Uses the \code{fgseaMultilevel} algorithm, which estimates p-values using
+#' an adaptive multilevel splitting Monte Carlo approach. This is more
+#' accurate than the original permutation-based \code{fgseaSimple} and does
+#' not require a fixed permutation count.
+#'
+#' GSEA operates on the full ranked gene list from \code{run.limma.de()}
+#' rather than a filtered subset, preserving information from all genes. Probe
+#' IDs from the TopTable row names are resolved to gene symbols via the
+#' \code{genes} annotation data frame before matching against pathway gene
+#' sets. Probes with no gene annotation are silently dropped from the ranked
+#' list, as they cannot be matched to any pathway. The \code{leadingEdge}
+#' genes are strong candidates for follow-up with \code{analyze.gene()} or
+#' \code{gene.analysis.plot()}.
+#'
+#' @examples
+#' \dontrun{
+#' library(msigdbr)
+#' geo <- extract.expression(load.geo.soft(accession = "GDS507",
+#'                                                  log.transform = TRUE))
+#' hallmark.df <- msigdbr(species = "Homo sapiens", category = "H")
+#' pathways <- split(hallmark.df$gene_symbol, hallmark.df$gs_name)
+#' de.results <- run.limma.de(geo)
+#' gsea.results <- run.gsea(de.results, geo$gene, pathways)
+#' head(gsea.results[order(gsea.results$padj), ])
+#' }
+#'
+#' @export
+run.gsea <- function(de.results, genes, pathways, min.size=15, max.size=500)
+{
+  # Resolve probe IDs to gene symbols
+  matched <- genes[which(genes$ID %in% rownames(de.results)), ]
+  gene.symbols <- matched[["Gene symbol"]]
+  probe.ids <- matched[["ID"]]
+
+  ranked.genes <- de.results[probe.ids, "logFC"]
+  names(ranked.genes) <- gene.symbols
+
+  # Drop unannotated probes
+  ranked.genes <- ranked.genes[names(ranked.genes) != ""]
+
+  # Collapse duplicate gene symbols by keeping the probe with the
+  # highest absolute fold change — multiple probes per gene is common
+  # on microarrays and fgsea requires unique gene names
+  ranked.genes <- ranked.genes[order(abs(ranked.genes), decreasing=TRUE)]
+  ranked.genes <- ranked.genes[!duplicated(names(ranked.genes))]
+  ranked.genes <- sort(ranked.genes, decreasing=TRUE)
+
+  fgsea::fgsea(
+    pathways = pathways,
+    stats = ranked.genes,
+    minSize = min.size,
+    maxSize = max.size
+  )
 }

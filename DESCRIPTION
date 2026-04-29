@@ -1,5 +1,5 @@
 Package: BioUtils
-Title: BioUtils: Tools for Biological Data Analysis and Visualization
+Title: Tools for Biological Data Analysis and Visualization
 Version: 0.0.0.9000
 Authors@R: 
     person("Spencer", "Treadway", , "spencer.treadway08@gmail.com", role = c("aut", "cre"))
@@ -18,6 +18,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends:
     R (>= 3.1.2)
+Suggests:
+  knitr,
+  rmarkdown,
+  msigdbr
+VignetteBuilder: knitr
 Imports:
   tidyr,
   GEOquery,

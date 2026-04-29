@@ -14,7 +14,7 @@ utils::globalVariables(c(
   # build.analysis.df — tidyselect column reference
   "probe",
   # stats_tests.R / visualization.R — ggplot2 aes() and formula objects
-  "expression", "group", "gene",
+  "expression", "group", "gene", "ID",
   # pca.plot — columns created from prcomp output before aes()
   "PC1", "PC2",
   # volcano.plot — columns created on de.results before aes()
