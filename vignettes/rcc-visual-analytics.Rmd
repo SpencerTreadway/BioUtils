@@ -58,9 +58,9 @@ accounting for approximately 90 percent of kidney cancers and an estimated 80,00
 new diagnoses annually in the United States. The clear cell subtype, which
 represents roughly 75 percent of RCC cases, is defined at the molecular level by
 biallelic inactivation of the *VHL* (Von Hippel-Lindau) tumor suppressor gene
-on chromosome 3p. VHL normally targets the transcription factor HIF1\alpha
+on chromosome 3p. VHL normally targets the transcription factor HIF1$\alpha$
 (Hypoxia Inducible Factor 1-alpha) for ubiquitin-mediated degradation under
-normoxic conditions. When VHL is lost, HIF1\alpha constitutively accumulates
+normoxic conditions. When VHL is lost, HIF1$\alpha$ constitutively accumulates
 regardless of oxygen availability, driving a broad transcriptional program
 that mimics chronic hypoxia. This program activates genes involved in
 angiogenesis (particularly *VEGF* and its receptors), anaerobic glucose
@@ -87,7 +87,7 @@ confounding.
 The central hypothesis is threefold: (1) clear cell RCC will produce a
 large, statistically robust differential expression signature relative to
 normal kidney; (2) that signature will be enriched for gene sets related to
-hypoxia, angiogenesis, and metabolic reprogramming consistent with HIF1\alpha
+hypoxia, angiogenesis, and metabolic reprogramming consistent with HIF1$\alpha$
 pathway activation; and (3) a small number of genes, fewer than 20, will
 jointly carry sufficient discriminative information to classify tumor from
 normal tissue with high accuracy.
@@ -214,7 +214,7 @@ The tight clustering of normal samples relative to the somewhat wider spread
 of RCC samples along PC2 is also biologically meaningful: normal kidney
 tissue is a relatively homogeneous cell type (primarily proximal tubule
 epithelium), whereas clear cell RCC tumors can vary in grade, stage, and
-the degree of HIF1\alpha pathway activation, producing slightly more variable
+the degree of HIF1$\alpha$ pathway activation, producing slightly more variable
 expression profiles within the tumor group.
 
 ---
@@ -314,8 +314,8 @@ plotly::plot_ly(
 
 Hovering over the most extreme probes in the upper right, the most
 significantly upregulated genes in RCC, reveals candidates consistent
-with HIF1\alpha pathway activation. Genes such as *CA9* (carbonic anhydrase 9),
-which is directly transcribed by HIF1\alpha and is one of the most
+with HIF1$\alpha$ pathway activation. Genes such as *CA9* (carbonic anhydrase 9),
+which is directly transcribed by HIF1$\alpha$ and is one of the most
 well-validated markers of clear cell RCC, and *VEGFA*, the master regulator
 of tumor angiogenesis, appear prominently. The upper left corner,
 significantly downregulated in RCC, contains genes involved in normal
@@ -369,7 +369,7 @@ The violin shape itself is informative beyond the boxplot summary. A
 bimodal violin in the RCC group, two peaks rather than one, would
 suggest the presence of a molecular subgroup within the tumor samples,
 potentially reflecting grade differences or the presence of a subset of
-tumors with particularly aggressive HIF1\alpha activation. Asymmetric tails
+tumors with particularly aggressive HIF1$\alpha$ activation. Asymmetric tails
 indicate the presence of outlier samples that may warrant investigation.
 
 ### 8.1 Single-Gene Deep-Dive
@@ -423,8 +423,8 @@ together, appearing as red blocks on the diagonal, share expression
 patterns across the 27 samples, suggesting common regulatory drivers.
 
 Several patterns are worth examining. Strong positive co-expression among
-known HIF1\alpha targets (*CA9*, *VEGFA*, and other hypoxia-response genes) would
-confirm that HIF1\alpha pathway activation is a coherent, coordinated program
+known HIF1$\alpha$ targets (*CA9*, *VEGFA*, and other hypoxia-response genes) would
+confirm that HIF1$\alpha$ pathway activation is a coherent, coordinated program
 in this dataset rather than a collection of independently dysregulated genes.
 Anti-correlated pairs, where one gene is high when the other is low,
 are equally interesting, as they may reflect reciprocal regulatory
@@ -516,10 +516,10 @@ The results are strongly consistent with known RCC biology. Pathways with
 positive NES, enriched among upregulated genes in RCC, are expected to
 include **HYPOXIA**, **ANGIOGENESIS**, **GLYCOLYSIS**, and
 **MYC_TARGETS**, all of which are direct or downstream consequences of
-constitutive HIF1\alpha activation following VHL loss. Hypoxia response genes
-are among HIF1\alpha's primary transcriptional targets; angiogenesis is driven
-by HIF1\alpha-induced VEGF secretion; and the metabolic switch to glycolysis
-(the Warburg effect) is a hallmark of HIF1\alpha-active tumors.
+constitutive HIF1$\alpha$ activation following VHL loss. Hypoxia response genes
+are among HIF1$\alpha$'s primary transcriptional targets; angiogenesis is driven
+by HIF1$\alpha$-induced VEGF secretion; and the metabolic switch to glycolysis
+(the Warburg effect) is a hallmark of HIF1$\alpha$-active tumors.
 
 Pathways with negative NES, enriched among downregulated genes, are
 equally revealing. Suppression of **OXIDATIVE_PHOSPHORYLATION** and
@@ -621,7 +621,7 @@ inference was possible.
 Genome-wide differential expression analysis identified a large number of
 significantly dysregulated probe sets at a 5 percent FDR threshold, with
 asymmetric representation of upregulated versus downregulated genes
-reflecting both HIF1\alpha pathway activation and the loss of normal proximal
+reflecting both HIF1$\alpha$ pathway activation and the loss of normal proximal
 tubule cell identity. The interactive volcano plot demonstrated the value
 of exploratory, hover-capable visualization for high-dimensional genomic
 data, allowing rapid identification of specific genes of interest without
@@ -644,7 +644,7 @@ Pathway enrichment analysis confirmed the biological coherence of the
 differential expression signature. The enrichment of hypoxia, angiogenesis,
 and glycolysis pathways among upregulated genes, and the suppression of
 oxidative phosphorylation and fatty acid metabolism among downregulated
-genes, is precisely consistent with constitutive HIF1\alpha activation following
+genes, is precisely consistent with constitutive HIF1$\alpha$ activation following
 VHL loss, the canonical molecular lesion of clear cell RCC. This
 concordance between data-driven results and prior biological knowledge
 substantially strengthens confidence in the analytical pipeline.
