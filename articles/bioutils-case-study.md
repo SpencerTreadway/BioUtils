@@ -424,10 +424,10 @@ overlapping with the others.
 
 For kidney cancer specifically, we might expect to see strong enrichment
 of hypoxia-related gene sets. Clear cell RCC commonly inactivates the
-*VHL* tumor suppressor gene, which normally targets the
-HIF1transcription factor for degradation. Without VHL, HIF1accumulates
-and drives a transcriptional program mimicking chronic oxygen
-deprivation, activating genes for blood vessel formation, glucose
+*VHL* tumor suppressor gene, which normally targets the HIF1$`\alpha`$
+transcription factor for degradation. Without VHL, HIF1$`\alpha`$
+accumulates and drives a transcriptional program mimicking chronic
+oxygen deprivation, activating genes for blood vessel formation, glucose
 uptake, and anaerobic metabolism. This is one of the best-characterized
 molecular signatures in all of oncology, and GSEA is an ideal tool for
 detecting it.
@@ -608,9 +608,9 @@ pairs (when one goes up, the other tends to go down).
 Clusters of co-expressed genes visible in the heatmap often correspond
 to genes in the same biological pathway or under the control of the same
 transcription factor. In a renal cell carcinoma context, you might see a
-cluster of angiogenesis-related genes (driven by HIF1pathway activation,
-common in RCC) all moving together, or a cluster of genes involved in
-fatty acid metabolism.
+cluster of angiogenesis-related genes (driven by HIF1$`\alpha`$ pathway
+activation, common in RCC) all moving together, or a cluster of genes
+involved in fatty acid metabolism.
 
 ### 5.2 LASSO Regression for Predictive Biomarker Discovery
 
