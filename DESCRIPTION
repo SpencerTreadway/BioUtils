@@ -1,6 +1,6 @@
 Package: BioUtils
 Title: BioUtils: Tools for Biological Data Analysis and Visualization
-Version: 0.0.1
+Version: 0.1.1
 Authors@R: 
     person("Spencer", "Treadway", , "spencer.treadway08@gmail.com", role = c("aut", "cre"))
 Description:
@@ -33,5 +33,5 @@ Imports:
   pheatmap,
   grDevices,
   fgsea
-URL: https://spencertreadway.github.io/BioUtils,
+URL: https://spencertreadway.github.io/BioUtils/,
      https://github.com/spencertreadway/BioUtils
