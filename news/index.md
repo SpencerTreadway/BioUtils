@@ -21,3 +21,16 @@
 
 - Added full pkgdown website
 - Added case study vignette on renal cell carcinoma transcriptomics
+
+## BioUtils 0.1.1
+
+### Working release
+
+#### Features
+
+No features were changed
+
+#### Documentation
+
+- Added an additional vignette to show extensions upon the package
+  particularly relating to visual analytics

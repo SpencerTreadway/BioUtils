@@ -53,6 +53,7 @@ which wraps GEOquery to parse the file and return a structured
 `ExpressionSet` object:
 
 ``` r
+
 library(BioUtils)
 
 eset <- load.geo.soft("", "GDS507", log.transform = TRUE)
@@ -73,6 +74,7 @@ decomposes the `ExpressionSet` into the three components used throughout
 BioUtils:
 
 ``` r
+
 geo <- extract.expression(eset)
 ```
 
@@ -103,6 +105,7 @@ state, rather than technical artifacts like batch effects or sample
 processing date.
 
 ``` r
+
 pca.plot(geo$expression, geo$phenotype, color.by = "disease.state")
 ```
 
@@ -144,6 +147,7 @@ for differential expression analysis, which solves both problems
 elegantly:
 
 ``` r
+
 de.results <- run.limma.de(geo, condition.col = "disease.state")
 ```
 
@@ -169,6 +173,7 @@ columns are:
   to be wrong.
 
 ``` r
+
 # Look at the top 10 most significantly differentially expressed probes
 head(de.results[order(de.results$adj.P.Val), ], 10)
 #>               logFC   AveExpr         t      P.Value    adj.P.Val        B
@@ -194,6 +199,7 @@ The most biologically interesting genes, large effect, high confidence,
 appear in the upper corners.
 
 ``` r
+
 volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
 ```
 
@@ -216,6 +222,7 @@ We now extract the probe IDs of the most significantly differentially
 expressed genes to carry forward into deeper analysis:
 
 ``` r
+
 # Extract the 10 most significant probe IDs (row names of the TopTable)
 top.probes <- rownames(head(de.results[order(de.results$adj.P.Val), ], 10))
 
@@ -261,6 +268,7 @@ magnitude, direction, and robustness of each gene’s difference.
 ### 3.1 Retrieving and Preparing Expression Data
 
 ``` r
+
 # Retrieve expression values for all top probes as a matrix
 expr.mat <- get.gene.expression(geo$expression, top.probes)
 
@@ -281,6 +289,7 @@ functions.
 ### 3.2 Multi-Gene Overview
 
 ``` r
+
 # Faceted violin + boxplot across all top genes simultaneously
 gene.analysis.plot(df.multi)
 ```
@@ -301,6 +310,7 @@ For the gene showing the most dramatic separation, we perform a full
 statistical analysis:
 
 ``` r
+
 # Subset to a single gene of interest
 gene.of.interest <- get.gene.name(geo$gene, top.probes[1], use.symbols=TRUE)
 df.single <- df.multi[which(df.multi$gene == gene.of.interest), ]
@@ -320,6 +330,7 @@ internally and annotates the plot with the key statistical results.
 ### 3.4 Understanding `analyze.gene()`
 
 ``` r
+
 result <- analyze.gene(df.single)
 cat(result$interpretation)
 #> The difference is statistically significant with a large effect size.
@@ -367,6 +378,7 @@ may be driven by distributional differences rather than a genuine shift
 in the population mean.
 
 ``` r
+
 # Inspect individual components
 cat("Effect size (Cohen's d):", round(result$effect.size, 3), "\n")
 #> Effect size (Cohen's d): 2.312
@@ -428,6 +440,7 @@ named list, which is the format
 expects:
 
 ``` r
+
 # Download Hallmark gene sets for Homo sapiens
 hallmark.df <- msigdbr::msigdbr(species = "Homo sapiens", category = "H")
 
@@ -461,6 +474,7 @@ most upregulated in RCC relative to normal, and genes at the bottom are
 the most downregulated.
 
 ``` r
+
 gsea.results <- run.gsea(de.results, geo$gene, pathways, min.size = 15, max.size = 500)
 
 # Sort by adjusted p-value and inspect the top enriched pathways
@@ -517,6 +531,7 @@ edge” of the ranked list. They are strong candidates for follow-up with
 [`analyze.gene()`](https://github.com/SpencerTreadway/BioUtils/reference/analyze.gene.md).
 
 ``` r
+
 # Extract the leading edge genes of the top enriched pathway
 top.pathway <- gsea.results$pathway[1]
 leading.genes <- unlist(gsea.results$leadingEdge[1])
@@ -571,6 +586,7 @@ patterns across samples: when one goes up, the other goes up. These
 functional partnership, or membership in the same biological pathway.
 
 ``` r
+
 # Compute pairwise Pearson correlations between our top probes
 cor.mat <- gene.correlation.matrix(geo$expression, top.probes, method = "pearson")
 
@@ -605,6 +621,7 @@ tissue? This is a classification problem, and it is where
 comes in.
 
 ``` r
+
 # Encode disease state as a binary outcome variable
 phenotype.binary <- ifelse(geo$phenotype$disease.state == "RCC", 1, 0)
 
@@ -655,6 +672,7 @@ The full analysis, from raw SOFT file to multi-gene biomarker panel, can
 be expressed as a coherent pipeline:
 
 ``` r
+
 library(BioUtils)
 
 # == 1. Import =================================================================
@@ -669,6 +687,7 @@ pca.plot(geo$expression, geo$phenotype, color.by = "disease.state")
 
 ``` r
 
+
 # == 3. Genome-Wide Differential Expression ====================================
 de.results <- run.limma.de(geo, condition.col = "disease.state")
 volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
@@ -677,6 +696,7 @@ volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
 ![](bioutils-case-study_files/figure-html/full_pipeline-2.png)
 
 ``` r
+
 
 # == 4. Select Top Candidates ==================================================
 top.probes <- rownames(head(de.results[order(de.results$adj.P.Val), ], 10))
@@ -697,6 +717,7 @@ gene.analysis.plot(df.multi)
 
 ``` r
 
+
 # == 7. Single-Gene Deep-Dive ==================================================
 df.single <- df.multi[which(df.multi$gene == get.gene.name(geo$gene, top.probes[1], use.symbols=TRUE)), ]
 gene.analysis.plot(df.single)
@@ -705,6 +726,7 @@ gene.analysis.plot(df.single)
 ![](bioutils-case-study_files/figure-html/full_pipeline-4.png)
 
 ``` r
+
 result <- analyze.gene(df.single)
 cat(result$interpretation)
 #> The difference is statistically significant with a large effect size.
@@ -719,6 +741,7 @@ correlation.heatmap.plot(cor.mat, gene.names = get.gene.name(geo$gene, top.probe
 ![](bioutils-case-study_files/figure-html/full_pipeline-5.png)
 
 ``` r
+
 
 # == 9. Pathway Enrichment =====================================================
 hallmark.df <- msigdbr::msigdbr(species = "Homo sapiens", category = "H")
@@ -770,20 +793,20 @@ print(selected)
 The table below summarizes every BioUtils function used in this
 vignette, the input it expects, and the output it produces:
 
-| Function                                                                                                          | Input                                    | Output                  | Role in Workflow                 |
-|-------------------------------------------------------------------------------------------------------------------|------------------------------------------|-------------------------|----------------------------------|
-| [`load.geo.soft()`](https://github.com/SpencerTreadway/BioUtils/reference/load.geo.soft.md)                       | SOFT file path                           | `ExpressionSet`         | Data import                      |
-| [`extract.expression()`](https://github.com/SpencerTreadway/BioUtils/reference/extract.expression.md)             | `ExpressionSet`                          | Named list              | Decompose into usable components |
-| [`pca.plot()`](https://github.com/SpencerTreadway/BioUtils/reference/pca.plot.md)                                 | Expression matrix, phenotype             | ggplot                  | Quality control                  |
-| [`run.limma.de()`](https://github.com/SpencerTreadway/BioUtils/reference/run.limma.de.md)                         | `geo` list                               | TopTable data frame     | Genome-wide DE                   |
-| [`volcano.plot()`](https://github.com/SpencerTreadway/BioUtils/reference/volcano.plot.md)                         | TopTable                                 | ggplot                  | DE visualization                 |
-| [`get.gene.name()`](https://github.com/SpencerTreadway/BioUtils/reference/get.gene.name.md)                       | Annotation df, probe IDs                 | Gene name strings       | Probe to gene resolution         |
-| [`find.probe.by.gene()`](https://github.com/SpencerTreadway/BioUtils/reference/find.probe.by.gene.md)             | Annotation df, gene names                | Probe ID integers       | Gene to probe resolution         |
-| [`get.gene.expression()`](https://github.com/SpencerTreadway/BioUtils/reference/get.gene.expression.md)           | Expression matrix, probe IDs             | Expression matrix       | Slice expression data            |
-| [`build.analysis.df()`](https://github.com/SpencerTreadway/BioUtils/reference/build.analysis.df.md)               | Expression matrix, phenotype, annotation | Long-format df          | Prepare for analysis             |
-| [`gene.analysis.plot()`](https://github.com/SpencerTreadway/BioUtils/reference/gene.analysis.plot.md)             | Long-format df                           | ggplot                  | Per-gene visualization           |
-| [`analyze.gene()`](https://github.com/SpencerTreadway/BioUtils/reference/analyze.gene.md)                         | Long-format df                           | Results list            | Full statistical analysis        |
-| [`gene.correlation.matrix()`](https://github.com/SpencerTreadway/BioUtils/reference/gene.correlation.matrix.md)   | Expression matrix, probe IDs             | Correlation matrix      | Co-expression                    |
-| [`correlation.heatmap.plot()`](https://github.com/SpencerTreadway/BioUtils/reference/correlation.heatmap.plot.md) | Correlation matrix                       | pheatmap                | Co-expression visualization      |
-| [`run.gsea()`](https://github.com/SpencerTreadway/BioUtils/reference/run.gsea.md)                                 | TopTable, pathway list                   | GSEA results data frame | Pathway enrichment               |
-| [`fit.lasso()`](https://github.com/SpencerTreadway/BioUtils/reference/fit.lasso.md)                               | Expression matrix, binary phenotype      | cv.glmnet               | Multi-gene biomarker selection   |
+| Function | Input | Output | Role in Workflow |
+|----|----|----|----|
+| [`load.geo.soft()`](https://github.com/SpencerTreadway/BioUtils/reference/load.geo.soft.md) | SOFT file path | `ExpressionSet` | Data import |
+| [`extract.expression()`](https://github.com/SpencerTreadway/BioUtils/reference/extract.expression.md) | `ExpressionSet` | Named list | Decompose into usable components |
+| [`pca.plot()`](https://github.com/SpencerTreadway/BioUtils/reference/pca.plot.md) | Expression matrix, phenotype | ggplot | Quality control |
+| [`run.limma.de()`](https://github.com/SpencerTreadway/BioUtils/reference/run.limma.de.md) | `geo` list | TopTable data frame | Genome-wide DE |
+| [`volcano.plot()`](https://github.com/SpencerTreadway/BioUtils/reference/volcano.plot.md) | TopTable | ggplot | DE visualization |
+| [`get.gene.name()`](https://github.com/SpencerTreadway/BioUtils/reference/get.gene.name.md) | Annotation df, probe IDs | Gene name strings | Probe to gene resolution |
+| [`find.probe.by.gene()`](https://github.com/SpencerTreadway/BioUtils/reference/find.probe.by.gene.md) | Annotation df, gene names | Probe ID integers | Gene to probe resolution |
+| [`get.gene.expression()`](https://github.com/SpencerTreadway/BioUtils/reference/get.gene.expression.md) | Expression matrix, probe IDs | Expression matrix | Slice expression data |
+| [`build.analysis.df()`](https://github.com/SpencerTreadway/BioUtils/reference/build.analysis.df.md) | Expression matrix, phenotype, annotation | Long-format df | Prepare for analysis |
+| [`gene.analysis.plot()`](https://github.com/SpencerTreadway/BioUtils/reference/gene.analysis.plot.md) | Long-format df | ggplot | Per-gene visualization |
+| [`analyze.gene()`](https://github.com/SpencerTreadway/BioUtils/reference/analyze.gene.md) | Long-format df | Results list | Full statistical analysis |
+| [`gene.correlation.matrix()`](https://github.com/SpencerTreadway/BioUtils/reference/gene.correlation.matrix.md) | Expression matrix, probe IDs | Correlation matrix | Co-expression |
+| [`correlation.heatmap.plot()`](https://github.com/SpencerTreadway/BioUtils/reference/correlation.heatmap.plot.md) | Correlation matrix | pheatmap | Co-expression visualization |
+| [`run.gsea()`](https://github.com/SpencerTreadway/BioUtils/reference/run.gsea.md) | TopTable, pathway list | GSEA results data frame | Pathway enrichment |
+| [`fit.lasso()`](https://github.com/SpencerTreadway/BioUtils/reference/fit.lasso.md) | Expression matrix, binary phenotype | cv.glmnet | Multi-gene biomarker selection |

@@ -22,6 +22,7 @@ interpretation.
 ## Installation
 
 ``` r
+
 install.packages("remotes")
 remotes::install_github("spencertreadway/BioUtils")
 ```
@@ -31,6 +32,7 @@ remotes::install_github("spencertreadway/BioUtils")
 ## Example Workflow
 
 ``` r
+
 # Load data
 eset <- load.geo.soft("GDS507.soft", log.transform = TRUE)
 geo <- extract.expression(eset)
@@ -78,6 +80,7 @@ Full documentation is available at
 <https://spencertreadway.github.io/BioUtils/> or via:
 
 ``` r
+
 help(package = "BioUtils")
 ```
 
@@ -156,3 +159,6 @@ Spencer Treadway
 
 - [BioUtils: A Case Study in Transcriptomic Analysis of Renal Cell
   Carcinoma](https://github.com/SpencerTreadway/BioUtils/articles/bioutils-case-study.md):
+- [Transcriptomic Signatures of Renal Cell Carcinoma: A Visual Analytics
+  Case
+  Study](https://github.com/SpencerTreadway/BioUtils/articles/rcc-visual-analytics.md):

@@ -22,6 +22,7 @@ interpretation.
 ## Installation
 
 ``` r
+
 install.packages("remotes")
 remotes::install_github("spencertreadway/BioUtils")
 ```
@@ -31,6 +32,7 @@ remotes::install_github("spencertreadway/BioUtils")
 ## Example Workflow
 
 ``` r
+
 # Load data
 eset <- load.geo.soft("GDS507.soft", log.transform = TRUE)
 geo <- extract.expression(eset)
@@ -78,6 +80,7 @@ Full documentation is available at
 <https://spencertreadway.github.io/BioUtils/> or via:
 
 ``` r
+
 help(package = "BioUtils")
 ```
 
