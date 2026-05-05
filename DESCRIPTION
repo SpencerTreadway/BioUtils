@@ -21,7 +21,8 @@ Depends:
 Suggests:
   knitr,
   rmarkdown,
-  msigdbr
+  msigdbr,
+  plotly
 VignetteBuilder: knitr
 Imports:
   tidyr,
