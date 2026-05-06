@@ -13,7 +13,8 @@ See \code{vignette("BioUtils")} for a full workflow walkthrough.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/SpencerTreadway/BioUtils}
+  \item \url{https://spencertreadway.github.io/BioUtils/}
+  \item \url{https://github.com/spencertreadway/BioUtils}
 }
 
 }
