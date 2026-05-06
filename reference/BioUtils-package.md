@@ -9,7 +9,9 @@ walkthrough.
 
 Useful links:
 
-- <https://github.com/SpencerTreadway/BioUtils>
+- <https://spencertreadway.github.io/BioUtils/>
+
+- <https://github.com/spencertreadway/BioUtils>
 
 ## Author
 
