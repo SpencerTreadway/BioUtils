@@ -21,8 +21,8 @@
 #' \code{get.gene.expression()} to retrieve a multi-row expression matrix.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #'
 #' # Single gene
 #' probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
@@ -64,8 +64,8 @@ find.probe.by.gene <- function(genes, gene.names)
 #' are queried.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #' probes <- find.probe.by.gene(geo$gene, c(
 #'   "mucin 20, cell surface associated",
 #'   "alcohol dehydrogenase 1A (class I), alpha polypeptide"
@@ -103,7 +103,7 @@ get.gene.expression <- function(expression, probe.id)
 #'   should be filtered with \code{which(result != "")}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' geo <- extract.expression(load.geo.soft(accession = "GDS507",
 #'                                         log.transform = TRUE))
 #' de.results <- run.limma.de(geo)

@@ -39,7 +39,7 @@ derived from the empirical distribution of bootstrapped effect sizes
 using the percentile method.
 }
 \examples{
-\dontrun{
+\donttest{
 ci <- compute.ci(df, alpha = 0.05, n.boot = 1000)
 }
 

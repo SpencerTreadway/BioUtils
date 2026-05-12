@@ -36,7 +36,7 @@ candidates for follow-up with \code{analyze.gene()} or inclusion in a gene
 signature for \code{run.gsea()}.
 }
 \examples{
-\dontrun{
+\donttest{
 de.results <- run.limma.de(eset, condition.col = "disease.state")
 volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
 }

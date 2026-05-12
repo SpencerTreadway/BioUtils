@@ -47,8 +47,8 @@ contains exactly one unique value. Multi-gene mode is triggered when
 both modes and matches the style conventions of the BioUtils package.
 }
 \examples{
-\dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+\donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 
 # Single-gene plot with statistical annotation
 probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")

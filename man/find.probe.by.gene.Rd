@@ -31,8 +31,8 @@ matching probe IDs are returned as a vector, which is then passed as-is to
 \code{get.gene.expression()} to retrieve a multi-row expression matrix.
 }
 \examples{
-\dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+\donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 
 # Single gene
 probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")

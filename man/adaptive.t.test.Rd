@@ -38,7 +38,7 @@ a one-way ANOVA as a confirmatory check. The returned list is consumed
 internally by \code{analyze.gene()}.
 }
 \examples{
-\dontrun{
+\donttest{
 result <- adaptive.t.test(df, alpha = 0.05)
 result$p.value
 }

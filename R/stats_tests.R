@@ -67,7 +67,7 @@ compute.effect.size <- function(df)
 #' using the percentile method.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ci <- compute.ci(df, alpha = 0.05, n.boot = 1000)
 #' }
 #'
@@ -114,7 +114,7 @@ compute.ci <- function(df, alpha=0.05, n.boot=1000)
 #' \code{robustness} field of its return value.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' res <- nonparametric.test(df)
 #' res$p.value
 #' }
@@ -143,7 +143,7 @@ nonparametric.test <- function(df)
 #'   moderate < 0.8 <= large.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' classify.effect.size(0.3)   # "small"
 #' classify.effect.size(-0.9)  # "large"
 #' }
@@ -197,7 +197,7 @@ classify.effect.size <- function(d)
 #' \code{analyze.gene()} using the same \code{alpha} passed to that function.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' flag.biological.relevance(effect.size = 0.6, p.value = 0.01)
 #' }
 #'
@@ -247,7 +247,7 @@ flag.biological.relevance <- function(effect.size, p.value, alpha=0.05)
 #' internally by \code{analyze.gene()}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' result <- adaptive.t.test(df, alpha = 0.05)
 #' result$p.value
 #' }
@@ -327,8 +327,8 @@ adaptive.t.test <- function(df, alpha=0.05)
 #' visualization.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #' probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
 #' expr <- get.gene.expression(geo$expression, probe)
 #' df <- build.analysis.df(expr, geo$phenotype, geo$gene)
@@ -438,8 +438,8 @@ analyze.gene <- function(df, alpha=0.05, n.boot=1000)
 #' \code{adj.P.Val} and \code{logFC} thresholds to define a gene signature.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #' de.results <- run.limma.de(geo, condition.col = "disease.state")
 #' head(de.results)
 #' }
@@ -481,8 +481,8 @@ run.limma.de <- function(geo, condition.col="disease.state", adjust.method="BH")
 #' \code{run.limma.de()} which handles correction internally.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
 #' probe.ids <- find.probe.by.gene(geo$gene, c("GENE1", "GENE2", "GENE3"))
 #'
 #' raw.pvals <- sapply(probe.ids, function(id) {
@@ -527,8 +527,8 @@ adjust.pvalues <- function(p.values, method="BH")
 #' the direct input for \code{plot.correlation.heatmap()}.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
 #' probe.ids <- find.probe.by.gene(geo$gene, c("BRCA1", "TP53", "MYC"))
 #' cor.mat <- gene.correlation.matrix(geo$expression, probe.ids, method = "spearman")
 #' plot.correlation.heatmap(cor.mat)
@@ -578,8 +578,8 @@ gene.correlation.matrix <- function(expression.matrix, probe.ids, method="pearso
 #' predictive signal.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
 #' phenotype.binary <- ifelse(geo$phenotype$disease.state == "disease", 1, 0)
 #' lasso.fit <- fit.lasso(geo$expression, phenotype.binary)
 #' selected <- coef(lasso.fit, s = "lambda.1se")
@@ -647,7 +647,7 @@ fit.lasso <- function(expression.matrix, phenotype.vector, alpha=1, nfolds=10)
 #' \code{gene.analysis.plot()}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(msigdbr)
 #' geo <- extract.expression(load.geo.soft(accession = "GDS507",
 #'                                                  log.transform = TRUE))

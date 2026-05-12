@@ -31,7 +31,7 @@ The result is used by \code{analyze.gene()} to populate the
 \code{robustness} field of its return value.
 }
 \examples{
-\dontrun{
+\donttest{
 res <- nonparametric.test(df)
 res$p.value
 }

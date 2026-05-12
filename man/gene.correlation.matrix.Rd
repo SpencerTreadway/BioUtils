@@ -36,8 +36,8 @@ shared regulatory control or pathway membership. The resulting matrix is
 the direct input for \code{plot.correlation.heatmap()}.
 }
 \examples{
-\dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+\donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
 probe.ids <- find.probe.by.gene(geo$gene, c("BRCA1", "TP53", "MYC"))
 cor.mat <- gene.correlation.matrix(geo$expression, probe.ids, method = "spearman")
 plot.correlation.heatmap(cor.mat)

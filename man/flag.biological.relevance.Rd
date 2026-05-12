@@ -35,7 +35,7 @@ inform interpretation. This function is called internally by
 \code{analyze.gene()} using the same \code{alpha} passed to that function.
 }
 \examples{
-\dontrun{
+\donttest{
 flag.biological.relevance(effect.size = 0.6, p.value = 0.01)
 }
 

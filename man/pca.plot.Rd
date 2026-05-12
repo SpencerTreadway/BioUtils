@@ -44,8 +44,8 @@ Unexpected clustering by batch, sex, or other covariates can indicate the
 need for covariate adjustment in downstream \code{run.limma.de()} models.
 }
 \examples{
-\dontrun{
-data <- extract.expression(load.geo.soft("GDS3268.soft"))
+\donttest{
+data <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 pca.plot(data$expression, data$phenotype, color.by = "disease.state")
 }
 

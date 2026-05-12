@@ -32,8 +32,8 @@ step in \code{build.analysis.df()} consistent regardless of how many genes
 are queried.
 }
 \examples{
-\dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+\donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 probes <- find.probe.by.gene(geo$gene, c(
   "mucin 20, cell surface associated",
   "alcohol dehydrogenase 1A (class I), alpha polypeptide"

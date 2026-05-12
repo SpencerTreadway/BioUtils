@@ -76,8 +76,8 @@ load.geo.soft <- function(file.path=NULL, accession=NULL, log.transform=FALSE)
 #' to \code{build.analysis.df()} for group labeling.
 #'
 #' @examples
-#' \dontrun{
-#' eset <- load.geo.soft("GDS3268.soft")
+#' \donttest{
+#' eset <- load.geo.soft(accession = "GDS507", log.transform = TRUE)
 #' geo <- extract.expression(eset)
 #' head(geo$phenotype)
 #' dim(geo$expression)

@@ -20,7 +20,7 @@ Categorizes an absolute Cohen's d value into a qualitative magnitude label
 using conventional thresholds.
 }
 \examples{
-\dontrun{
+\donttest{
 classify.effect.size(0.3)   # "small"
 classify.effect.size(-0.9)  # "large"
 }

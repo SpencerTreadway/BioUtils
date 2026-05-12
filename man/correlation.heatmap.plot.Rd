@@ -33,7 +33,7 @@ for a pre-selected gene set, and complements the genome-wide network view
 produced by WGCNA.
 }
 \examples{
-\dontrun{
+\donttest{
 probe.ids <- sapply(c("BRCA1", "TP53", "MYC", "EGFR"), function(g) {
   find.probe.by.gene(genes, g)
 })

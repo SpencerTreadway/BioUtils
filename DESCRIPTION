@@ -17,7 +17,6 @@ Description: Provides tools for the analysis and visualization of gene
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends:
     R (>= 3.1.2)
 Suggests:
@@ -38,3 +37,4 @@ Imports:
   fgsea
 URL: https://spencertreadway.github.io/BioUtils/,
      https://github.com/spencertreadway/BioUtils
+Config/roxygen2/version: 8.0.0

@@ -36,8 +36,8 @@
 #' both modes and matches the style conventions of the BioUtils package.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #'
 #' # Single-gene plot with statistical annotation
 #' probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
@@ -153,8 +153,8 @@ gene.analysis.plot <- function(df, alpha=0.05, n.boot=1000, show.points=TRUE)
 #' need for covariate adjustment in downstream \code{run.limma.de()} models.
 #'
 #' @examples
-#' \dontrun{
-#' data <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' data <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #' pca.plot(data$expression, data$phenotype, color.by = "disease.state")
 #' }
 #'
@@ -216,7 +216,7 @@ pca.plot <- function(expression.matrix, phenotype, color.by="disease.state", sca
 #' signature for \code{run.gsea()}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' de.results <- run.limma.de(eset, condition.col = "disease.state")
 #' volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
 #' }
@@ -282,7 +282,7 @@ volcano.plot <- function(de.results, fc.threshold=1, fdr.threshold=0.05)
 #' produced by WGCNA.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' probe.ids <- sapply(c("BRCA1", "TP53", "MYC", "EGFR"), function(g) {
 #'   find.probe.by.gene(genes, g)
 #' })

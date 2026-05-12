@@ -58,7 +58,7 @@ genes are strong candidates for follow-up with \code{analyze.gene()} or
 \code{gene.analysis.plot()}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(msigdbr)
 geo <- extract.expression(load.geo.soft(accession = "GDS507",
                                                  log.transform = TRUE))

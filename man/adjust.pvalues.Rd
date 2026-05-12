@@ -33,8 +33,8 @@ to confirmatory settings. For genome-wide analysis, prefer
 \code{run.limma.de()} which handles correction internally.
 }
 \examples{
-\dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+\donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
 probe.ids <- find.probe.by.gene(geo$gene, c("GENE1", "GENE2", "GENE3"))
 
 raw.pvals <- sapply(probe.ids, function(id) {

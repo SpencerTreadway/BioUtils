@@ -40,8 +40,8 @@
 #' under \code{Imports} in the package DESCRIPTION.
 #'
 #' @examples
-#' \dontrun{
-#' geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+#' \donttest{
+#' geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #' probe <- find.probe.by.gene(geo$gene, c("MUC20", "ADH1A"))
 #' expr <- get.gene.expression(geo$expression, probe)
 #' df <- build.analysis.df(expr, geo$phenotype, geo$gene)

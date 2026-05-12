@@ -46,8 +46,8 @@ The returned TopTable is the primary input for downstream functions such as
 \code{adj.P.Val} and \code{logFC} thresholds to define a gene signature.
 }
 \examples{
-\dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+\donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 de.results <- run.limma.de(geo, condition.col = "disease.state")
 head(de.results)
 }

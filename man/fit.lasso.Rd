@@ -46,8 +46,8 @@ expression, LASSO identifies the minimal subset with non-redundant joint
 predictive signal.
 }
 \examples{
-\dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+\donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
 phenotype.binary <- ifelse(geo$phenotype$disease.state == "disease", 1, 0)
 lasso.fit <- fit.lasso(geo$expression, phenotype.binary)
 selected <- coef(lasso.fit, s = "lambda.1se")

@@ -32,7 +32,7 @@ title strings or short gene symbols using the gene annotation data frame.
 This is the inverse operation of \code{find.probe.by.gene()}.
 }
 \examples{
-\dontrun{
+\donttest{
 geo <- extract.expression(load.geo.soft(accession = "GDS507",
                                         log.transform = TRUE))
 de.results <- run.limma.de(geo)
