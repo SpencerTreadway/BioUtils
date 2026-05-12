@@ -73,14 +73,21 @@ modes and matches the style conventions of the BioUtils package.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+# \donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
+#> GDS3268 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS3268 found here:
+#> /tmp/RtmpYU9fuS/GDS3268.soft.gz 
+#> Warning: NaNs produced
+#> Using locally cached version of GPL1708 found here:
+#> /tmp/RtmpYU9fuS/GPL1708.annot.gz 
 
 # Single-gene plot with statistical annotation
 probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
 expr <- get.gene.expression(geo$expression, probe)
 df <- build.analysis.df(expr, geo$phenotype, geo$gene)
 gene.analysis.plot(df)
+
 
 # Multi-gene faceted plot
 probes <- find.probe.by.gene(geo$gene, c(
@@ -90,5 +97,6 @@ probes <- find.probe.by.gene(geo$gene, c(
 expr.multi <- get.gene.expression(geo$expression, probes)
 df.multi <- build.analysis.df(expr.multi, geo$phenotype, geo$gene)
 gene.analysis.plot(df.multi)
-} # }
+
+# }
 ```

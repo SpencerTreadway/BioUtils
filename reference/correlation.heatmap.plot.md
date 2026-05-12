@@ -44,11 +44,14 @@ view produced by WGCNA.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 probe.ids <- sapply(c("BRCA1", "TP53", "MYC", "EGFR"), function(g) {
   find.probe.by.gene(genes, g)
 })
+#> Error in FUN(X[[i]], ...): object 'genes' not found
 cor.mat <- gene.correlation.matrix(expression, probe.ids)
+#> Error: object 'probe.ids' not found
 correlation.heatmap.plot(cor.mat, gene.names = c("BRCA1", "TP53", "MYC", "EGFR"))
-} # }
+#> Error: object 'cor.mat' not found
+# }
 ```

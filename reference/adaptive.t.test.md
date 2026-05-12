@@ -62,8 +62,10 @@ confirmatory check. The returned list is consumed internally by
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 result <- adaptive.t.test(df, alpha = 0.05)
+#> Error in model.frame.default(formula = expression ~ group, data = df): 'data' must be a data.frame, environment, or list
 result$p.value
-} # }
+#> Error: object 'result' not found
+# }
 ```

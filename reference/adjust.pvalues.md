@@ -46,8 +46,11 @@ which handles correction internally.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+# \donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
+#> GDS507 not found locally, downloading from NCBI GEO...
+#> Setting options('download.file.method.GEOquery'='auto')
+#> Setting options('GEOquery.inmemory.gpl'=FALSE)
 probe.ids <- find.probe.by.gene(geo$gene, c("GENE1", "GENE2", "GENE3"))
 
 raw.pvals <- sapply(probe.ids, function(id) {
@@ -56,5 +59,5 @@ raw.pvals <- sapply(probe.ids, function(id) {
   analyze.gene(df)$p.value
 })
 adj.pvals <- adjust.pvalues(raw.pvals, method = "BH")
-} # }
+# }
 ```

@@ -44,13 +44,20 @@ consistent regardless of how many genes are queried.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+# \donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
+#> GDS3268 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS3268 found here:
+#> /tmp/RtmpYU9fuS/GDS3268.soft.gz 
+#> Warning: NaNs produced
+#> Using locally cached version of GPL1708 found here:
+#> /tmp/RtmpYU9fuS/GPL1708.annot.gz 
 probes <- find.probe.by.gene(geo$gene, c(
   "mucin 20, cell surface associated",
   "alcohol dehydrogenase 1A (class I), alpha polypeptide"
 ))
 expr <- get.gene.expression(geo$expression, probes)
 dim(expr)  # probes x samples
-} # }
+#> [1]   4 202
+# }
 ```

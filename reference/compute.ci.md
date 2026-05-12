@@ -56,7 +56,8 @@ using the percentile method.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 ci <- compute.ci(df, alpha = 0.05, n.boot = 1000)
-} # }
+#> Error in df[sample(nrow(df), replace = TRUE), ]: object of type 'closure' is not subsettable
+# }
 ```

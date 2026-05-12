@@ -87,12 +87,32 @@ to <code><a href="build.analysis.df.html">build.analysis.df()</a></code> for gro
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="load.geo.soft.html">load.geo.soft</a></span><span class="op">(</span><span class="st">"GDS3268.soft"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="load.geo.soft.html">load.geo.soft</a></span><span class="op">(</span>accession <span class="op">=</span> <span class="st">"GDS507"</span>, log.transform <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> GDS507 not found locally, downloading from NCBI GEO...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using locally cached version of GDS507 found here:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpYU9fuS/GDS507.soft.gz </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using locally cached version of GPL97 found here:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpYU9fuS/GPL97.annot.gz </span>
 <span class="r-in"><span><span class="va">geo</span> <span class="op">&lt;-</span> <span class="fu">extract.expression</span><span class="op">(</span><span class="va">eset</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">geo</span><span class="op">$</span><span class="va">phenotype</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            sample disease.state individual</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM11815 GSM11815           RCC        035</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM11832 GSM11832           RCC        023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM12069 GSM12069           RCC        001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM12083 GSM12083           RCC        005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM12101 GSM12101           RCC        011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM12106 GSM12106           RCC        032</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                   description</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM11815 Value for GSM11815: C035 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM11832 Value for GSM11832: C023 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM12069 Value for GSM12069: C001 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM12083 Value for GSM12083: C005 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM12101 Value for GSM12101: C011 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GSM12106 Value for GSM12106: C032 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">geo</span><span class="op">$</span><span class="va">expression</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 22645    17</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

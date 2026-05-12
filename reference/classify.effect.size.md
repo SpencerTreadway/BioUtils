@@ -24,8 +24,10 @@ negligible \< 0.2 \<= small \< 0.5 \<= moderate \< 0.8 \<= large.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 classify.effect.size(0.3)   # "small"
+#> [1] "small"
 classify.effect.size(-0.9)  # "large"
-} # }
+#> [1] "large"
+# }
 ```

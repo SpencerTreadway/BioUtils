@@ -96,12 +96,17 @@ visualization.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+# \donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
+#> GDS3268 not found locally, downloading from NCBI GEO...
+#> Warning: NaNs produced
 probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
 expr <- get.gene.expression(geo$expression, probe)
 df <- build.analysis.df(expr, geo$phenotype, geo$gene)
 result <- analyze.gene(df)
 cat(result$interpretation)
-} # }
+#> The difference is not statistically significant with a negligible effect size.
+#> Result is no consistent evidence of difference.
+#> No strong evidence of biological relevance.
+# }
 ```

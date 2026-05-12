@@ -76,11 +76,19 @@ Requires `tidyr` for the pivot step. Ensure `tidyr` is listed under
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+# \donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
+#> GDS3268 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS3268 found here:
+#> /tmp/RtmpYU9fuS/GDS3268.soft.gz 
+#> Warning: NaNs produced
+#> Using locally cached version of GPL1708 found here:
+#> /tmp/RtmpYU9fuS/GPL1708.annot.gz 
 probe <- find.probe.by.gene(geo$gene, c("MUC20", "ADH1A"))
 expr <- get.gene.expression(geo$expression, probe)
 df <- build.analysis.df(expr, geo$phenotype, geo$gene)
 head(df)
-} # }
+#> [1] gene       expression group     
+#> <0 rows> (or 0-length row.names)
+# }
 ```

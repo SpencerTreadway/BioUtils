@@ -51,10 +51,30 @@ for group labeling.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-eset <- load.geo.soft("GDS3268.soft")
+# \donttest{
+eset <- load.geo.soft(accession = "GDS507", log.transform = TRUE)
+#> GDS507 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS507 found here:
+#> /tmp/RtmpYU9fuS/GDS507.soft.gz 
+#> Using locally cached version of GPL97 found here:
+#> /tmp/RtmpYU9fuS/GPL97.annot.gz 
 geo <- extract.expression(eset)
 head(geo$phenotype)
+#>            sample disease.state individual
+#> GSM11815 GSM11815           RCC        035
+#> GSM11832 GSM11832           RCC        023
+#> GSM12069 GSM12069           RCC        001
+#> GSM12083 GSM12083           RCC        005
+#> GSM12101 GSM12101           RCC        011
+#> GSM12106 GSM12106           RCC        032
+#>                                                                                                                                   description
+#> GSM11815 Value for GSM11815: C035 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue
+#> GSM11832 Value for GSM11832: C023 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue
+#> GSM12069 Value for GSM12069: C001 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue
+#> GSM12083 Value for GSM12083: C005 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue
+#> GSM12101 Value for GSM12101: C011 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue
+#> GSM12106 Value for GSM12106: C032 Renal Clear Cell Carcinoma U133B; src: Trizol isolation of total RNA from Renal Clear Cell Carcinoma tissue
 dim(geo$expression)
-} # }
+#> [1] 22645    17
+# }
 ```

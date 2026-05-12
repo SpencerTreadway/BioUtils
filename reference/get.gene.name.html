@@ -82,10 +82,16 @@ should be filtered with <code>which(result != "")</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">geo</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract.expression.html">extract.expression</a></span><span class="op">(</span><span class="fu"><a href="load.geo.soft.html">load.geo.soft</a></span><span class="op">(</span>accession <span class="op">=</span> <span class="st">"GDS507"</span>,</span></span>
 <span class="r-in"><span>                                        log.transform <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> GDS507 not found locally, downloading from NCBI GEO...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using locally cached version of GDS507 found here:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpYU9fuS/GDS507.soft.gz </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using locally cached version of GPL97 found here:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpYU9fuS/GPL97.annot.gz </span>
 <span class="r-in"><span><span class="va">de.results</span> <span class="op">&lt;-</span> <span class="fu"><a href="run.limma.de.html">run.limma.de</a></span><span class="op">(</span><span class="va">geo</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removing intercept from test coefficients</span>
 <span class="r-in"><span><span class="va">top.probes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">de.results</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Full titles for reporting</span></span></span>
@@ -93,7 +99,7 @@ should be filtered with <code>which(result != "")</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Short symbols for plot labels and GSEA</span></span></span>
 <span class="r-in"><span><span class="va">top.symbols</span> <span class="op">&lt;-</span> <span class="fu">get.gene.name</span><span class="op">(</span><span class="va">geo</span><span class="op">$</span><span class="va">gene</span>, <span class="va">top.probes</span>, use.symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

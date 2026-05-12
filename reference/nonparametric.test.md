@@ -46,8 +46,10 @@ to populate the `robustness` field of its return value.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 res <- nonparametric.test(df)
+#> Error in model.frame.default(formula = expression ~ group, data = df): 'data' must be a data.frame, environment, or list
 res$p.value
-} # }
+#> Error: object 'res' not found
+# }
 ```

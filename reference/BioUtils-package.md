@@ -16,3 +16,7 @@ Useful links:
 ## Author
 
 **Maintainer**: Spencer Treadway <spencer.treadway08@gmail.com>
+
+Authors:
+
+- Spencer Treadway <spencer.treadway08@gmail.com>

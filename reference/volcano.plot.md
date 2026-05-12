@@ -52,8 +52,10 @@ or inclusion in a gene signature for
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 de.results <- run.limma.de(eset, condition.col = "disease.state")
+#> Error: object 'eset' not found
 volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
-} # }
+#> Error: object 'de.results' not found
+# }
 ```

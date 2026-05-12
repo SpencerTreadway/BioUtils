@@ -122,16 +122,48 @@ genes are strong candidates for follow-up with <code><a href="analyze.gene.html"
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://igordot.github.io/msigdbr/" class="external-link">msigdbr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">geo</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract.expression.html">extract.expression</a></span><span class="op">(</span><span class="fu"><a href="load.geo.soft.html">load.geo.soft</a></span><span class="op">(</span>accession <span class="op">=</span> <span class="st">"GDS507"</span>,</span></span>
 <span class="r-in"><span>                                                 log.transform <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> GDS507 not found locally, downloading from NCBI GEO...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using locally cached version of GDS507 found here:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpYU9fuS/GDS507.soft.gz </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using locally cached version of GPL97 found here:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpYU9fuS/GPL97.annot.gz </span>
 <span class="r-in"><span><span class="va">hallmark.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://igordot.github.io/msigdbr/reference/msigdbr.html" class="external-link">msigdbr</a></span><span class="op">(</span>species <span class="op">=</span> <span class="st">"Homo sapiens"</span>, category <span class="op">=</span> <span class="st">"H"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `category` argument of `msigdbr()` is deprecated as of msigdbr 10.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use the `collection` argument instead.</span>
 <span class="r-in"><span><span class="va">pathways</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">hallmark.df</span><span class="op">$</span><span class="va">gene_symbol</span>, <span class="va">hallmark.df</span><span class="op">$</span><span class="va">gs_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">de.results</span> <span class="op">&lt;-</span> <span class="fu"><a href="run.limma.de.html">run.limma.de</a></span><span class="op">(</span><span class="va">geo</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removing intercept from test coefficients</span>
 <span class="r-in"><span><span class="va">gsea.results</span> <span class="op">&lt;-</span> <span class="fu">run.gsea</span><span class="op">(</span><span class="va">de.results</span>, <span class="va">geo</span><span class="op">$</span><span class="va">gene</span>, <span class="va">pathways</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">gsea.results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">gsea.results</span><span class="op">$</span><span class="va">padj</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       pathway         pval         padj</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        &lt;char&gt;        &lt;num&gt;        &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         HALLMARK_INTERFERON_GAMMA_RESPONSE 1.070472e-10 4.817122e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:               HALLMARK_ALLOGRAFT_REJECTION 5.848911e-07 1.316005e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:           HALLMARK_TNFA_SIGNALING_VIA_NFKB 2.907131e-06 4.360697e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         HALLMARK_INTERFERON_ALPHA_RESPONSE 2.128793e-04 2.394892e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION 5.130165e-04 4.617148e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:             HALLMARK_INFLAMMATORY_RESPONSE 1.199914e-03 8.999356e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      log2err         ES       NES  size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;     &lt;num&gt; &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.8390889 -0.6451016 -2.606335    67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.6594444 -0.6559719 -2.317805    38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.6272567 -0.5518351 -2.164702    59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 0.5188481 -0.5941171 -2.007562    32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 0.4772708 -0.4610456 -1.837766    64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 0.4550599 -0.4546495 -1.769240    58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                     leadingEdge</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          &lt;list&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: ST8SIA4,IRF1,SAMHD1,SSPN,GBP4,SLAMF7,...[42]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    ST8SIA4,TLR3,CTSS,EGFR,GBP2,BCAT1,...[15]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: IRF1,DUSP4,INHBA,EDN1,MARCKS,SLC16A6,...[36]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    GBP2,IRF1,GBP4,RSAD2,CMPK2,SAMD9L,...[18]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  NNMT,CTHRC1,ACTA2,EDIL3,INHBA,PRRX1,...[21]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:      P2RX7,TLR3,IRF1,INHBA,EDN1,IL7R,...[23]</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

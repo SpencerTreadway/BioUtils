@@ -53,7 +53,8 @@ using the same `alpha` passed to that function.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 flag.biological.relevance(effect.size = 0.6, p.value = 0.01)
-} # }
+#> [1] "Potentially biologically meaningful"
+# }
 ```

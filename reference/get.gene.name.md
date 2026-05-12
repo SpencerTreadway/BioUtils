@@ -43,10 +43,16 @@ be filtered with `which(result != "")`.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 geo <- extract.expression(load.geo.soft(accession = "GDS507",
                                         log.transform = TRUE))
+#> GDS507 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS507 found here:
+#> /tmp/RtmpYU9fuS/GDS507.soft.gz 
+#> Using locally cached version of GPL97 found here:
+#> /tmp/RtmpYU9fuS/GPL97.annot.gz 
 de.results <- run.limma.de(geo)
+#> Removing intercept from test coefficients
 top.probes <- rownames(head(de.results, 10))
 
 # Full titles for reporting
@@ -54,5 +60,5 @@ top.titles  <- get.gene.name(geo$gene, top.probes)
 
 # Short symbols for plot labels and GSEA
 top.symbols <- get.gene.name(geo$gene, top.probes, use.symbols = TRUE)
-} # }
+# }
 ```

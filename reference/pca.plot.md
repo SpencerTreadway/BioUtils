@@ -62,8 +62,15 @@ models.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-data <- extract.expression(load.geo.soft("GDS3268.soft"))
+# \donttest{
+data <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
+#> GDS3268 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS3268 found here:
+#> /tmp/RtmpYU9fuS/GDS3268.soft.gz 
+#> Warning: NaNs produced
+#> Using locally cached version of GPL1708 found here:
+#> /tmp/RtmpYU9fuS/GPL1708.annot.gz 
 pca.plot(data$expression, data$phenotype, color.by = "disease.state")
-} # }
+#> Error in prcomp.default(t(expression.matrix), scale. = scale): cannot rescale a constant/zero column to unit variance
+# }
 ```

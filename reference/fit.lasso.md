@@ -67,11 +67,19 @@ signal.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-geo <- extract.expression(load.geo.soft("GDS3268.soft"))
+# \donttest{
+geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
+#> GDS507 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS507 found here:
+#> /tmp/RtmpYU9fuS/GDS507.soft.gz 
+#> Using locally cached version of GPL97 found here:
+#> /tmp/RtmpYU9fuS/GPL97.annot.gz 
 phenotype.binary <- ifelse(geo$phenotype$disease.state == "disease", 1, 0)
 lasso.fit <- fit.lasso(geo$expression, phenotype.binary)
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': non-conformable arguments
 selected <- coef(lasso.fit, s = "lambda.1se")
+#> Error: object 'lasso.fit' not found
 selected[selected[, 1] != 0, ]
-} # }
+#> Error: object 'selected' not found
+# }
 ```

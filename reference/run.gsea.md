@@ -92,14 +92,46 @@ or
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(msigdbr)
 geo <- extract.expression(load.geo.soft(accession = "GDS507",
                                                  log.transform = TRUE))
+#> GDS507 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS507 found here:
+#> /tmp/RtmpYU9fuS/GDS507.soft.gz 
+#> Using locally cached version of GPL97 found here:
+#> /tmp/RtmpYU9fuS/GPL97.annot.gz 
 hallmark.df <- msigdbr(species = "Homo sapiens", category = "H")
+#> Warning: The `category` argument of `msigdbr()` is deprecated as of msigdbr 10.0.0.
+#> ℹ Please use the `collection` argument instead.
 pathways <- split(hallmark.df$gene_symbol, hallmark.df$gs_name)
 de.results <- run.limma.de(geo)
+#> Removing intercept from test coefficients
 gsea.results <- run.gsea(de.results, geo$gene, pathways)
 head(gsea.results[order(gsea.results$padj), ])
-} # }
+#>                                       pathway         pval         padj
+#>                                        <char>        <num>        <num>
+#> 1:         HALLMARK_INTERFERON_GAMMA_RESPONSE 1.070472e-10 4.817122e-09
+#> 2:               HALLMARK_ALLOGRAFT_REJECTION 5.848911e-07 1.316005e-05
+#> 3:           HALLMARK_TNFA_SIGNALING_VIA_NFKB 2.907131e-06 4.360697e-05
+#> 4:         HALLMARK_INTERFERON_ALPHA_RESPONSE 2.128793e-04 2.394892e-03
+#> 5: HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION 5.130165e-04 4.617148e-03
+#> 6:             HALLMARK_INFLAMMATORY_RESPONSE 1.199914e-03 8.999356e-03
+#>      log2err         ES       NES  size
+#>        <num>      <num>     <num> <int>
+#> 1: 0.8390889 -0.6451016 -2.606335    67
+#> 2: 0.6594444 -0.6559719 -2.317805    38
+#> 3: 0.6272567 -0.5518351 -2.164702    59
+#> 4: 0.5188481 -0.5941171 -2.007562    32
+#> 5: 0.4772708 -0.4610456 -1.837766    64
+#> 6: 0.4550599 -0.4546495 -1.769240    58
+#>                                     leadingEdge
+#>                                          <list>
+#> 1: ST8SIA4,IRF1,SAMHD1,SSPN,GBP4,SLAMF7,...[42]
+#> 2:    ST8SIA4,TLR3,CTSS,EGFR,GBP2,BCAT1,...[15]
+#> 3: IRF1,DUSP4,INHBA,EDN1,MARCKS,SLC16A6,...[36]
+#> 4:    GBP2,IRF1,GBP4,RSAD2,CMPK2,SAMD9L,...[18]
+#> 5:  NNMT,CTHRC1,ACTA2,EDIL3,INHBA,PRRX1,...[21]
+#> 6:      P2RX7,TLR3,IRF1,INHBA,EDN1,IL7R,...[23]
+# }
 ```
