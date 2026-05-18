@@ -8,7 +8,7 @@
 \description{
 BioUtils provides a collection of tools for preprocessing biological
 datasets, performing statistical analyses, and generating visualizations.
-See \code{vignette("BioUtils")} for a full workflow walkthrough.
+See \code{vignette("bioutils-case-study")} for a full workflow walkthrough.
 }
 \seealso{
 Useful links:

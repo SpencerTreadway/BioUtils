@@ -47,11 +47,14 @@ predictive signal.
 }
 \examples{
 \donttest{
-geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
-phenotype.binary <- ifelse(geo$phenotype$disease.state == "disease", 1, 0)
-lasso.fit <- fit.lasso(geo$expression, phenotype.binary)
-selected <- coef(lasso.fit, s = "lambda.1se")
-selected[selected[, 1] != 0, ]
+# Synthetic example — small expression matrix with binary outcome
+set.seed(42)
+expr.mat <- matrix(rnorm(200), nrow = 20, ncol = 10)
+rownames(expr.mat) <- paste0("probe", 1:20)
+colnames(expr.mat) <- paste0("sample", 1:10)
+phenotype.binary <- c(0, 0, 0, 0, 0, 1, 1, 1, 1, 1)
+lasso.fit <- fit.lasso(expr.mat, phenotype.binary)
+coef(lasso.fit, s = "lambda.1se")
 }
 
 }

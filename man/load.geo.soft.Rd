@@ -27,10 +27,7 @@ Otherwise the dataset is downloaded from NCBI GEO using \code{accession} and
 cached in \code{tempdir()}.
 }
 \examples{
-\dontrun{
-# Load from a local file
-eset <- load.geo.soft("GDS507.soft")
-
+\donttest{
 # Download automatically if not found locally
 eset <- load.geo.soft("GDS507.soft", accession = "GDS507", log.transform = TRUE)
 

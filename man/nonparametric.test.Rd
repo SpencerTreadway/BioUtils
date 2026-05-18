@@ -32,7 +32,12 @@ The result is used by \code{analyze.gene()} to populate the
 }
 \examples{
 \donttest{
-res <- nonparametric.test(df)
+analysis.df <- data.frame(
+  expression = c(1.2, 2.3, 1.8, 2.1, 3.4, 2.9, 3.1, 2.7,
+                 1.5, 2.0, 1.9, 2.4),
+  group      = rep(c("normal", "RCC"), each = 6)
+)
+res <- nonparametric.test(analysis.df)
 res$p.value
 }
 

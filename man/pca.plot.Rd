@@ -45,8 +45,19 @@ need for covariate adjustment in downstream \code{run.limma.de()} models.
 }
 \examples{
 \donttest{
-data <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
-pca.plot(data$expression, data$phenotype, color.by = "disease.state")
+# Create a synthetic expression matrix (50 probes x 12 samples)
+set.seed(42)
+expr.mat <- matrix(rnorm(600), nrow = 50, ncol = 12)
+rownames(expr.mat) <- paste0("probe", 1:50)
+colnames(expr.mat) <- paste0("sample", 1:12)
+
+# Create a matching phenotype data frame
+phenotype <- data.frame(
+  disease.state = rep(c("normal", "RCC"), each = 6),
+  row.names = paste0("sample", 1:12)
+)
+
+pca.plot(expr.mat, phenotype, color.by = "disease.state")
 }
 
 }

@@ -37,10 +37,12 @@ the direct input for \code{plot.correlation.heatmap()}.
 }
 \examples{
 \donttest{
-geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
-probe.ids <- find.probe.by.gene(geo$gene, c("BRCA1", "TP53", "MYC"))
-cor.mat <- gene.correlation.matrix(geo$expression, probe.ids, method = "spearman")
-plot.correlation.heatmap(cor.mat)
+set.seed(42)
+expr.mat <- matrix(rnorm(400), nrow = 4, ncol = 100)
+rownames(expr.mat) <- c(101, 102, 103, 104)
+probe.ids <- c(101, 102, 103, 104)
+cor.mat <- gene.correlation.matrix(expr.mat, probe.ids)
+correlation.heatmap.plot(cor.mat, gene.names = c("BRCA1", "TP53", "MYC", "EGFR"))
 }
 
 }

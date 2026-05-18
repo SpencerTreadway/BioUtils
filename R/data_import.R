@@ -16,10 +16,7 @@
 #' @return An \code{ExpressionSet} object for use with \code{extract.expression()}.
 #'
 #' @examples
-#' \dontrun{
-#' # Load from a local file
-#' eset <- load.geo.soft("GDS507.soft")
-#'
+#' \donttest{
 #' # Download automatically if not found locally
 #' eset <- load.geo.soft("GDS507.soft", accession = "GDS507", log.transform = TRUE)
 #'

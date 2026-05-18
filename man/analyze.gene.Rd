@@ -60,8 +60,8 @@ visualization.
 geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
 expr <- get.gene.expression(geo$expression, probe)
-df <- build.analysis.df(expr, geo$phenotype, geo$gene)
-result <- analyze.gene(df)
+analysis.df <- build.analysis.df(expr, geo$phenotype, geo$gene)
+result <- analyze.gene(analysis.df, n.boot=100)
 cat(result$interpretation)
 }
 

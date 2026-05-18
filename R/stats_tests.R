@@ -18,6 +18,11 @@ compute.effect.size <- function(df)
 {
   groups <- split(df$expression, df$group)
 
+  if(length(groups) < 2)
+  {
+    return(NA)
+  }
+
   g1 <- groups[[1]]
   g2 <- groups[[2]]
 
@@ -68,7 +73,12 @@ compute.effect.size <- function(df)
 #'
 #' @examples
 #' \donttest{
-#' ci <- compute.ci(df, alpha = 0.05, n.boot = 1000)
+#' # Build a minimal example data frame
+#' analysis.df <- data.frame(
+#'   expression = c(1.2, 2.3, 1.8, 2.1, 3.4, 2.9, 3.1, 2.7),
+#'   group = rep(c("normal", "RCC"), each = 4)
+#' )
+#' ci <- compute.ci(analysis.df, alpha = 0.05, n.boot = 100)
 #' }
 #'
 #' @export
@@ -81,6 +91,8 @@ compute.ci <- function(df, alpha=0.05, n.boot=1000)
     sample.df <- df[sample(nrow(df), replace=TRUE), ]
     boot.ds[i] <- compute.effect.size(sample.df)
   }
+
+  boot.ds <- boot.ds[!is.na(boot.ds)]
 
   ci <- quantile(boot.ds, c(alpha / 2, 1 - (alpha / 2)), na.rm=TRUE)
 
@@ -115,7 +127,12 @@ compute.ci <- function(df, alpha=0.05, n.boot=1000)
 #'
 #' @examples
 #' \donttest{
-#' res <- nonparametric.test(df)
+#' analysis.df <- data.frame(
+#'   expression = c(1.2, 2.3, 1.8, 2.1, 3.4, 2.9, 3.1, 2.7,
+#'                  1.5, 2.0, 1.9, 2.4),
+#'   group      = rep(c("normal", "RCC"), each = 6)
+#' )
+#' res <- nonparametric.test(analysis.df)
 #' res$p.value
 #' }
 #'
@@ -248,7 +265,12 @@ flag.biological.relevance <- function(effect.size, p.value, alpha=0.05)
 #'
 #' @examples
 #' \donttest{
-#' result <- adaptive.t.test(df, alpha = 0.05)
+#' # Build a minimal example data frame
+#' analysis.df <- data.frame(
+#'   expression = c(1.2, 2.3, 1.8, 2.1, 3.4, 2.9, 3.1, 2.7),
+#'   group = rep(c("normal", "RCC"), each = 4)
+#' )
+#' result <- adaptive.t.test(analysis.df, alpha = 0.05)
 #' result$p.value
 #' }
 #'
@@ -331,8 +353,8 @@ adaptive.t.test <- function(df, alpha=0.05)
 #' geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #' probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")
 #' expr <- get.gene.expression(geo$expression, probe)
-#' df <- build.analysis.df(expr, geo$phenotype, geo$gene)
-#' result <- analyze.gene(df)
+#' analysis.df <- build.analysis.df(expr, geo$phenotype, geo$gene)
+#' result <- analyze.gene(analysis.df, n.boot=100)
 #' cat(result$interpretation)
 #' }
 #'
@@ -528,10 +550,12 @@ adjust.pvalues <- function(p.values, method="BH")
 #'
 #' @examples
 #' \donttest{
-#' geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
-#' probe.ids <- find.probe.by.gene(geo$gene, c("BRCA1", "TP53", "MYC"))
-#' cor.mat <- gene.correlation.matrix(geo$expression, probe.ids, method = "spearman")
-#' plot.correlation.heatmap(cor.mat)
+#' set.seed(42)
+#' expr.mat <- matrix(rnorm(400), nrow = 4, ncol = 100)
+#' rownames(expr.mat) <- c(101, 102, 103, 104)
+#' probe.ids <- c(101, 102, 103, 104)
+#' cor.mat <- gene.correlation.matrix(expr.mat, probe.ids)
+#' correlation.heatmap.plot(cor.mat, gene.names = c("BRCA1", "TP53", "MYC", "EGFR"))
 #' }
 #'
 #' @export
@@ -579,11 +603,14 @@ gene.correlation.matrix <- function(expression.matrix, probe.ids, method="pearso
 #'
 #' @examples
 #' \donttest{
-#' geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
-#' phenotype.binary <- ifelse(geo$phenotype$disease.state == "disease", 1, 0)
-#' lasso.fit <- fit.lasso(geo$expression, phenotype.binary)
-#' selected <- coef(lasso.fit, s = "lambda.1se")
-#' selected[selected[, 1] != 0, ]
+#' # Synthetic example — small expression matrix with binary outcome
+#' set.seed(42)
+#' expr.mat <- matrix(rnorm(200), nrow = 20, ncol = 10)
+#' rownames(expr.mat) <- paste0("probe", 1:20)
+#' colnames(expr.mat) <- paste0("sample", 1:10)
+#' phenotype.binary <- c(0, 0, 0, 0, 0, 1, 1, 1, 1, 1)
+#' lasso.fit <- fit.lasso(expr.mat, phenotype.binary)
+#' coef(lasso.fit, s = "lambda.1se")
 #' }
 #'
 #' @export

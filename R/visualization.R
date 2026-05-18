@@ -154,8 +154,19 @@ gene.analysis.plot <- function(df, alpha=0.05, n.boot=1000, show.points=TRUE)
 #'
 #' @examples
 #' \donttest{
-#' data <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
-#' pca.plot(data$expression, data$phenotype, color.by = "disease.state")
+#' # Create a synthetic expression matrix (50 probes x 12 samples)
+#' set.seed(42)
+#' expr.mat <- matrix(rnorm(600), nrow = 50, ncol = 12)
+#' rownames(expr.mat) <- paste0("probe", 1:50)
+#' colnames(expr.mat) <- paste0("sample", 1:12)
+#'
+#' # Create a matching phenotype data frame
+#' phenotype <- data.frame(
+#'   disease.state = rep(c("normal", "RCC"), each = 6),
+#'   row.names = paste0("sample", 1:12)
+#' )
+#'
+#' pca.plot(expr.mat, phenotype, color.by = "disease.state")
 #' }
 #'
 #' @export
@@ -217,7 +228,16 @@ pca.plot <- function(expression.matrix, phenotype, color.by="disease.state", sca
 #'
 #' @examples
 #' \donttest{
-#' de.results <- run.limma.de(eset, condition.col = "disease.state")
+#' \donttest{
+#' # Synthesize a minimal TopTable as returned by run.limma.de()
+#' set.seed(42)
+#' n <- 200
+#' de.results <- data.frame(
+#'   logFC = rnorm(n, mean = 0, sd = 2),
+#'   adj.P.Val = runif(n, min = 0, max = 1),
+#'   AveExpr = rnorm(n, mean = 8, sd = 1),
+#'   row.names = paste0("probe", 1:n)
+#' )
 #' volcano.plot(de.results, fc.threshold = 1, fdr.threshold = 0.05)
 #' }
 #'
@@ -283,11 +303,18 @@ volcano.plot <- function(de.results, fc.threshold=1, fdr.threshold=0.05)
 #'
 #' @examples
 #' \donttest{
-#' probe.ids <- sapply(c("BRCA1", "TP53", "MYC", "EGFR"), function(g) {
-#'   find.probe.by.gene(genes, g)
-#' })
-#' cor.mat <- gene.correlation.matrix(expression, probe.ids)
-#' correlation.heatmap.plot(cor.mat, gene.names = c("BRCA1", "TP53", "MYC", "EGFR"))
+#' mat <- matrix(
+#'   c(1.00, 0.85, 0.62, 0.91,
+#'     0.85, 1.00, 0.74, 0.88,
+#'     0.62, 0.74, 1.00, 0.69,
+#'     0.91, 0.88, 0.69, 1.00),
+#'   nrow = 4,
+#'   dimnames = list(
+#'     c("BRCA1", "TP53", "MYC", "EGFR"),
+#'     c("BRCA1", "TP53", "MYC", "EGFR")
+#'   )
+#' )
+#' correlation.heatmap.plot(mat, gene.names = c("BRCA1", "TP53", "MYC", "EGFR"))
 #' }
 #'
 #' @export
