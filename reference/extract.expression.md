@@ -55,9 +55,9 @@ for group labeling.
 eset <- load.geo.soft(accession = "GDS507", log.transform = TRUE)
 #> GDS507 not found locally, downloading from NCBI GEO...
 #> Using locally cached version of GDS507 found here:
-#> /tmp/RtmpYU9fuS/GDS507.soft.gz 
+#> /tmp/RtmpxRZSjV/GDS507.soft.gz 
 #> Using locally cached version of GPL97 found here:
-#> /tmp/RtmpYU9fuS/GPL97.annot.gz 
+#> /tmp/RtmpxRZSjV/GPL97.annot.gz 
 geo <- extract.expression(eset)
 head(geo$phenotype)
 #>            sample disease.state individual

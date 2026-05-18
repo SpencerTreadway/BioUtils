@@ -45,13 +45,18 @@ view produced by WGCNA.
 
 ``` r
 # \donttest{
-probe.ids <- sapply(c("BRCA1", "TP53", "MYC", "EGFR"), function(g) {
-  find.probe.by.gene(genes, g)
-})
-#> Error in FUN(X[[i]], ...): object 'genes' not found
-cor.mat <- gene.correlation.matrix(expression, probe.ids)
-#> Error: object 'probe.ids' not found
-correlation.heatmap.plot(cor.mat, gene.names = c("BRCA1", "TP53", "MYC", "EGFR"))
-#> Error: object 'cor.mat' not found
+mat <- matrix(
+  c(1.00, 0.85, 0.62, 0.91,
+    0.85, 1.00, 0.74, 0.88,
+    0.62, 0.74, 1.00, 0.69,
+    0.91, 0.88, 0.69, 1.00),
+  nrow = 4,
+  dimnames = list(
+    c("BRCA1", "TP53", "MYC", "EGFR"),
+    c("BRCA1", "TP53", "MYC", "EGFR")
+  )
+)
+correlation.heatmap.plot(mat, gene.names = c("BRCA1", "TP53", "MYC", "EGFR"))
+
 # }
 ```

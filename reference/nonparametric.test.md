@@ -47,9 +47,13 @@ to populate the `robustness` field of its return value.
 
 ``` r
 # \donttest{
-res <- nonparametric.test(df)
-#> Error in model.frame.default(formula = expression ~ group, data = df): 'data' must be a data.frame, environment, or list
+analysis.df <- data.frame(
+  expression = c(1.2, 2.3, 1.8, 2.1, 3.4, 2.9, 3.1, 2.7,
+                 1.5, 2.0, 1.9, 2.4),
+  group      = rep(c("normal", "RCC"), each = 6)
+)
+res <- nonparametric.test(analysis.df)
 res$p.value
-#> Error: object 'res' not found
+#> [1] 1
 # }
 ```

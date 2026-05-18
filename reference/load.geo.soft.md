@@ -37,14 +37,21 @@ An `ExpressionSet` object for use with
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# Load from a local file
-eset <- load.geo.soft("GDS507.soft")
-
+# \donttest{
 # Download automatically if not found locally
 eset <- load.geo.soft("GDS507.soft", accession = "GDS507", log.transform = TRUE)
+#> GDS507 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS507 found here:
+#> /tmp/RtmpxRZSjV/GDS507.soft.gz 
+#> Using locally cached version of GPL97 found here:
+#> /tmp/RtmpxRZSjV/GPL97.annot.gz 
 
 # Download without a local file at all
 eset <- load.geo.soft(NULL, accession = "GDS507", log.transform = TRUE)
-} # }
+#> GDS507 not found locally, downloading from NCBI GEO...
+#> Using locally cached version of GDS507 found here:
+#> /tmp/RtmpxRZSjV/GDS507.soft.gz 
+#> Using locally cached version of GPL97 found here:
+#> /tmp/RtmpxRZSjV/GPL97.annot.gz 
+# }
 ```

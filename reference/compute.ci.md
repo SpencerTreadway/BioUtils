@@ -57,7 +57,11 @@ using the percentile method.
 
 ``` r
 # \donttest{
-ci <- compute.ci(df, alpha = 0.05, n.boot = 1000)
-#> Error in df[sample(nrow(df), replace = TRUE), ]: object of type 'closure' is not subsettable
+# Build a minimal example data frame
+analysis.df <- data.frame(
+  expression = c(1.2, 2.3, 1.8, 2.1, 3.4, 2.9, 3.1, 2.7),
+  group = rep(c("normal", "RCC"), each = 4)
+)
+ci <- compute.ci(analysis.df, alpha = 0.05, n.boot = 100)
 # }
 ```

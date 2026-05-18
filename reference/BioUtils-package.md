@@ -2,8 +2,9 @@
 
 BioUtils provides a collection of tools for preprocessing biological
 datasets, performing statistical analyses, and generating
-visualizations. See `vignette("BioUtils")` for a full workflow
-walkthrough.
+visualizations. See
+[`vignette("bioutils-case-study")`](https://github.com/SpencerTreadway/BioUtils/articles/bioutils-case-study.md)
+for a full workflow walkthrough.
 
 ## See also
 

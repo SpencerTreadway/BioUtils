@@ -68,18 +68,48 @@ signal.
 
 ``` r
 # \donttest{
-geo <- extract.expression(load.geo.soft(accession = "GDS507", log.transform = TRUE))
-#> GDS507 not found locally, downloading from NCBI GEO...
-#> Using locally cached version of GDS507 found here:
-#> /tmp/RtmpYU9fuS/GDS507.soft.gz 
-#> Using locally cached version of GPL97 found here:
-#> /tmp/RtmpYU9fuS/GPL97.annot.gz 
-phenotype.binary <- ifelse(geo$phenotype$disease.state == "disease", 1, 0)
-lasso.fit <- fit.lasso(geo$expression, phenotype.binary)
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': non-conformable arguments
-selected <- coef(lasso.fit, s = "lambda.1se")
-#> Error: object 'lasso.fit' not found
-selected[selected[, 1] != 0, ]
-#> Error: object 'selected' not found
+# Synthetic example — small expression matrix with binary outcome
+set.seed(42)
+expr.mat <- matrix(rnorm(200), nrow = 20, ncol = 10)
+rownames(expr.mat) <- paste0("probe", 1:20)
+colnames(expr.mat) <- paste0("sample", 1:10)
+phenotype.binary <- c(0, 0, 0, 0, 0, 1, 1, 1, 1, 1)
+lasso.fit <- fit.lasso(expr.mat, phenotype.binary)
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: Option grouped=FALSE enforced in cv.glmnet, since < 3 observations per fold
+coef(lasso.fit, s = "lambda.1se")
+#> 21 x 1 sparse Matrix of class "dgCMatrix"
+#>             lambda.1se
+#> (Intercept)          .
+#> probe1               .
+#> probe2               .
+#> probe3               .
+#> probe4               .
+#> probe5               .
+#> probe6               .
+#> probe7               .
+#> probe8               .
+#> probe9               .
+#> probe10              .
+#> probe11              .
+#> probe12              .
+#> probe13              .
+#> probe14              .
+#> probe15              .
+#> probe16              .
+#> probe17              .
+#> probe18              .
+#> probe19              .
+#> probe20              .
 # }
 ```

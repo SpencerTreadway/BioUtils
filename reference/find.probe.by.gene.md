@@ -46,10 +46,10 @@ to retrieve a multi-row expression matrix.
 geo <- extract.expression(load.geo.soft(accession = "GDS3268", log.transform = TRUE))
 #> GDS3268 not found locally, downloading from NCBI GEO...
 #> Using locally cached version of GDS3268 found here:
-#> /tmp/RtmpYU9fuS/GDS3268.soft.gz 
+#> /tmp/RtmpxRZSjV/GDS3268.soft.gz 
 #> Warning: NaNs produced
 #> Using locally cached version of GPL1708 found here:
-#> /tmp/RtmpYU9fuS/GPL1708.annot.gz 
+#> /tmp/RtmpxRZSjV/GPL1708.annot.gz 
 
 # Single gene
 probe <- find.probe.by.gene(geo$gene, "mucin 20, cell surface associated")

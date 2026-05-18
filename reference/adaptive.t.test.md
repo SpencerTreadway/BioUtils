@@ -63,9 +63,13 @@ confirmatory check. The returned list is consumed internally by
 
 ``` r
 # \donttest{
-result <- adaptive.t.test(df, alpha = 0.05)
-#> Error in model.frame.default(formula = expression ~ group, data = df): 'data' must be a data.frame, environment, or list
+# Build a minimal example data frame
+analysis.df <- data.frame(
+  expression = c(1.2, 2.3, 1.8, 2.1, 3.4, 2.9, 3.1, 2.7),
+  group = rep(c("normal", "RCC"), each = 4)
+)
+result <- adaptive.t.test(analysis.df, alpha = 0.05)
 result$p.value
-#> Error: object 'result' not found
+#> [1] 0.005946574
 # }
 ```
